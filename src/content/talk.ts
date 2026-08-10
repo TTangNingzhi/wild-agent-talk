@@ -6,10 +6,11 @@ export const talk = {
   title: 'Coding Agents in the Wild',
   speaker: {
     name: 'Ningzhi Tang',
+    homepage: 'https://www.nztang.com/',
     ldap: 'ningzhitang@',
     roles: ['UX Engineer Intern @ Google', 'PhD Candidate @ University of Notre Dame'],
   },
-  venue: 'DevAI Research',
+  venue: 'DevAI Research (Google)',
   date: 'August 10, 2026',
 } as const
 
@@ -25,7 +26,7 @@ export const papers = [
     status: 'accepted',
     question: 'How do developers work with coding agents?',
     authors:
-      'Ningzhi Tang, Chaoran Chen, Zihan Fang, Gelei Xu, Maria Dhakal, Yiyu Shi, Collin McMillan, Yu Huang, Toby Jia-Jun Li',
+      'Ningzhi Tang*, Chaoran Chen*, Zihan Fang, Gelei Xu, Maria Dhakal, Yiyu Shi, Collin McMillan, Yu Huang, Toby Jia-Jun Li',
     affiliations: 'University of Notre Dame, Vanderbilt University',
     cover: chatCover,
     arxiv: 'https://arxiv.org/abs/2604.00436',
@@ -58,33 +59,30 @@ export type Paper = (typeof papers)[number]
 /** Closing: what the two papers make possible, and what is still open. */
 export const whatsNext = {
   established:
-    'From trajectories we can analyze developer behavior, and more importantly extract structured records that characterize how agents leave developers unsatisfied.',
+    'Developer-agent trajectories let us study behavior and turn moments of dissatisfaction into structured evidence.',
   problems: [
     {
       n: '1',
-      title: 'The extracted taxonomy is not necessarily right',
-      lead: 'Both papers produce one. So do many others, and they all look broadly alike.',
+      title: 'Taxonomies and classifiers need to keep evolving',
       points: [
-        'Working to some extent, enough to publish a paper, may already be enough.',
-        'How does it keep evolving to fit new developer-agent interaction patterns?',
-        'How does it get human validation?',
+        'How do they adapt to new developer-agent interaction patterns?',
+        'How do we keep human validation in the loop?',
       ],
     },
     {
       n: '2',
-      title: 'What to do with the misalignment signal',
-      lead: 'We can detect it now. Both uses are open questions.',
+      title: 'How do we put misalignment signals to work?',
       points: [
-        'Use it to improve the agent: reward signal, or benchmark cases.',
-        'Use it to build roundabouts for end users: AGENTS.md, skills, and other customization.',
+        'Improve agents through reward signals and benchmark cases.',
+        'Help users customize agents through AGENTS.md, skills, and other controls.',
       ],
     },
   ],
   summer: {
-    label: 'My summer project explores',
+    label: 'My internship project addresses them',
     items: [
-      { name: 'Human annotation interface for trajectory analysis', note: 'Open problem 1' },
-      { name: 'Interaction design space in agent customization', note: 'Open problem 2' },
+      'Human annotation interfaces for trajectory analysis',
+      'Interaction design space for agent customization',
     ],
   },
 } as const

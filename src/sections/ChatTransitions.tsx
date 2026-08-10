@@ -32,21 +32,18 @@ function LiftArrow({ value, back }: { value: string; back?: boolean }) {
 /** Finding 9: transitions are self-reinforcing, with a few tight cross-category loops. */
 export default function ChatTransitions() {
   return (
-    <Finding n={9} headline="Sessions get stuck in loops" divider={false} accent={accent}>
+    <Finding n={9} headline="Sessions get stuck in loops, with subsequent prompts carrying the same intent" divider={false} accent={accent}>
       <Reveal>
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', md: '1fr 1.15fr' },
+            gridTemplateColumns: { xs: '1fr', md: '1.15fr 1fr' },
             columnGap: 4,
             rowGap: 3,
-            alignItems: 'start',
+            alignItems: { xs: 'start', md: 'center' },
           }}
         >
           <Stack spacing={2}>
-            <Typography variant="body2" color="text.disabled">
-              {transitions.method}
-            </Typography>
             <Typography variant="h5" component="p">
               {transitions.selfLoop}
             </Typography>
@@ -89,12 +86,17 @@ export default function ChatTransitions() {
             </Stack>
           </Stack>
 
-          <Box
-            component="img"
-            src={lift}
-            alt="Markov lift between intent subcategories within sessions. The diagonal dominates."
-            sx={{ display: 'block', width: '100%', height: 'auto' }}
-          />
+          <Stack component="figure" spacing={1} sx={{ m: 0, minWidth: 0 }}>
+            <Box
+              component="img"
+              src={lift}
+              alt="Markov lift between intent subcategories within sessions. The diagonal dominates."
+              sx={{ display: 'block', width: '100%', height: 'auto' }}
+            />
+            <Typography component="figcaption" variant="body2" color="text.disabled">
+              {transitions.method}
+            </Typography>
+          </Stack>
         </Box>
       </Reveal>
     </Finding>

@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { Fragment } from 'react'
 
-import { accentMain, type Accent } from '../accents'
+import type { Accent } from '../accents'
 
 export type MethodStep = {
   step: string
@@ -27,16 +27,12 @@ function Step({ item, accent }: { item: MethodStep; accent: Accent }) {
     <Paper
       variant="outlined"
       sx={{
-        position: 'relative',
         height: '100%',
-        overflow: 'hidden',
         p: 2,
-        pt: 2.25,
         bgcolor: tint[accent],
         borderColor: 'divider',
       }}
     >
-      <Box sx={{ position: 'absolute', inset: '0 0 auto 0', height: 4, bgcolor: accentMain(accent) }} />
       <Stack spacing={0.75}>
         <Typography variant="overline" color="text.secondary">
           Step {item.step}

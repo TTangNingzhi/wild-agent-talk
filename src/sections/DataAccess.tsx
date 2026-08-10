@@ -1,4 +1,5 @@
 import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded'
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
 import Box from '@mui/material/Box'
@@ -19,70 +20,50 @@ export default function DataAccess() {
   return (
     <Section
       id="data-access"
-      title="Firsthand logs exist. Access is narrow."
+      title="The access gap"
     >
-      <Stack spacing={0}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 1fr) 56px minmax(0, 1fr)' },
+          alignItems: 'stretch',
+        }}
+      >
         <Reveal>
-          <Paper variant="outlined" sx={{ overflow: 'hidden', borderColor: 'grey.500' }}>
-            <Stack direction={{ xs: 'column', md: 'row' }}>
-              <Stack spacing={1.5} sx={{ flex: 1, p: { xs: 3, md: 3.5 } }}>
-                <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
-                  <LockOutlinedIcon sx={{ color: 'text.secondary' }} />
-                  <Typography variant="overline" color="text.primary">
-                    Inside Google
-                  </Typography>
-                </Stack>
-                <Typography variant="h4" component="h3">
-                  Jetski
-                </Typography>
-                <Typography variant="body1" component="p" color="text.secondary">
-                  Firsthand developer-agent interaction at product scale.
+          <Paper
+            variant="outlined"
+            sx={{ height: '100%', p: { xs: 3, md: 3.5 }, borderColor: 'grey.500' }}
+          >
+            <Stack spacing={1.5} sx={{ height: '100%', justifyContent: 'center' }}>
+              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+                <LockOutlinedIcon sx={{ color: 'text.secondary' }} />
+                <Typography variant="overline" color="text.primary">
+                  Inside OpenAI / Anthropic / Google
                 </Typography>
               </Stack>
-
-              <Stack
-                spacing={1.5}
-                sx={{
-                  width: { md: 410 },
-                  flexShrink: 0,
-                  p: { xs: 3, md: 3.5 },
-                  bgcolor: accessRedWash,
-                  borderTop: { xs: '1px solid', md: 0 },
-                  borderLeft: { xs: 0, md: '4px solid' },
-                  borderColor: accessRed,
-                  justifyContent: 'center',
-                }}
-              >
-                <Typography variant="overline" sx={{ color: accessRed }}>
-                  My intern access
-                </Typography>
-                <Typography variant="body1" component="p">
-                  Even as a Google intern, I cannot access Jetski logs.
-                </Typography>
-                <Box
-                  sx={{
-                    alignSelf: 'flex-start',
-                    px: 1.25,
-                    py: 0.5,
-                    borderRadius: 1,
-                    bgcolor: accessRed,
-                    color: '#ffffff',
-                    fontFamily: '"Google Sans Code", monospace',
-                    fontSize: '1rem',
-                    fontWeight: 500,
-                    letterSpacing: '0.04em',
-                  }}
-                >
-                  ACCESS DENIED
-                </Box>
-              </Stack>
+              <Typography variant="h4" component="h3">
+                Codex, Claude Code, and Antigravity
+              </Typography>
+              <Typography variant="body1" component="p" color="text.secondary">
+                Firsthand developer-agent interaction at product scale.
+              </Typography>
             </Stack>
           </Paper>
         </Reveal>
 
         <Reveal delay={100}>
-          <Stack sx={{ height: 48, alignItems: 'center', justifyContent: 'center' }}>
-            <Box sx={{ width: 2, height: 10, bgcolor: accessRed, opacity: 0.5 }} />
+          <Stack
+            direction={{ xs: 'column', md: 'row' }}
+            sx={{ height: { xs: 56, md: '100%' }, alignItems: 'center', justifyContent: 'center' }}
+          >
+            <Box
+              sx={{
+                width: { xs: 2, md: 11 },
+                height: { xs: 11, md: 2 },
+                bgcolor: accessRed,
+                opacity: 0.5,
+              }}
+            />
             <Box
               sx={{
                 width: 34,
@@ -95,14 +76,30 @@ export default function DataAccess() {
                 bgcolor: 'background.default',
               }}
             >
-              <ArrowDownwardRoundedIcon sx={{ fontSize: 20, color: accessRed }} />
+              <ArrowDownwardRoundedIcon
+                sx={{ display: { xs: 'block', md: 'none' }, fontSize: 20, color: accessRed }}
+              />
+              <ArrowForwardRoundedIcon
+                sx={{ display: { xs: 'none', md: 'block' }, fontSize: 20, color: accessRed }}
+              />
             </Box>
+            <Box
+              sx={{
+                width: { xs: 2, md: 11 },
+                height: { xs: 11, md: 2 },
+                bgcolor: accessRed,
+                opacity: 0.5,
+              }}
+            />
           </Stack>
         </Reveal>
 
         <Reveal delay={160}>
-          <Paper variant="outlined" sx={{ p: { xs: 3, md: 3.5 }, borderColor: accessRed }}>
-            <Stack spacing={2}>
+          <Paper
+            variant="outlined"
+            sx={{ height: '100%', p: { xs: 3, md: 3.5 }, borderColor: accessRed }}
+          >
+            <Stack spacing={2} sx={{ height: '100%', justifyContent: 'center' }}>
               <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
                 <PublicOutlinedIcon sx={{ color: accessRed }} />
                 <Typography variant="overline" sx={{ color: accessRed }}>
@@ -151,7 +148,7 @@ export default function DataAccess() {
             </Stack>
           </Paper>
         </Reveal>
-      </Stack>
+      </Box>
     </Section>
   )
 }

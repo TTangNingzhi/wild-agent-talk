@@ -1,3 +1,4 @@
+import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -7,7 +8,6 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
 
-import MisalignFinding from '../components/MisalignFinding'
 import Reveal from '../components/Reveal'
 import Section from '../components/Section'
 import { misalignModality } from '../content/dataset'
@@ -15,9 +15,9 @@ import { misalignModality } from '../content/dataset'
 /** RQ3: the same models fail differently depending on the interface. */
 export default function MisalignModality() {
   return (
-    <Section id="misalign-modality" title="IDE against CLI">
+    <Section id="misalign-modality" title="IDE vs CLI">
       <Reveal>
-        <Stack spacing={1.25}>
+        <Stack spacing={1.25} sx={{ width: '100%', maxWidth: 900, mx: 'auto' }}>
           <TableContainer>
             <Table
               aria-label="IDE against CLI comparison"
@@ -30,7 +30,7 @@ export default function MisalignModality() {
                   borderBottom: 0,
                   fontSize: '1.0625rem',
                   px: 1.5,
-                  py: 0.75,
+                  py: 0.5,
                 },
                 '& .MuiTableCell-head': {
                   borderBottom: '1px solid',
@@ -71,11 +71,21 @@ export default function MisalignModality() {
         </Stack>
       </Reveal>
 
-      <Stack spacing={0}>
-        {misalignModality.findings.map((item, i) => (
-          <MisalignFinding key={item.n} item={item} divider={i > 0} />
-        ))}
-      </Stack>
+      <Reveal>
+        <Typography
+          variant="h5"
+          component="p"
+          sx={{ pt: { xs: 2.5, md: 3 }, fontSize: '1.375rem', fontWeight: 400, lineHeight: 1.55 }}
+        >
+          <Box component="strong" sx={{ fontWeight: 600 }}>
+            Takeaway:
+          </Box>{' '}
+          Developers push back more on faulty code in the IDE. In the CLI, they push back more on
+          constraint violations, and failures reach further into project or external state. A
+          likely reason is greater agent autonomy and less developer attention to code-level
+          details.
+        </Typography>
+      </Reveal>
     </Section>
   )
 }

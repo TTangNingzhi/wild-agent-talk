@@ -51,7 +51,7 @@ export default function DataScale() {
   return (
     <Section
       id="data-scale"
-      title="Scope expands"
+      title="Corpus scope expands"
     >
       <Stack
         direction={{ xs: 'column', md: 'row' }}

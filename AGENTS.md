@@ -1,6 +1,6 @@
 # Project: Coding Agents in the Wild
 
-A semi-slide-style presentation website for a live research talk at Google DevAI Research (Ningzhi Tang, August 10, 2026). Presents two papers in sources/: programming-by-chat (ASE '26) and coding-agent-misalignment (under submission at EMNLP '26).
+A semi-slide-style presentation website for a live research talk at Google DevAI Research (Ningzhi Tang, August 10, 2026). Presents two papers in sources/: programming-by-chat (ASE '26) and coding-agent-misalignment (under submission).
 
 ## Layout: semi-slide
 

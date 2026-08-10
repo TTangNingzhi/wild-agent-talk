@@ -36,7 +36,7 @@ function Quote({ item }: { item: Evidence }) {
 /** RQ1 findings, one line each, with the two strongest pieces of evidence under it. */
 export default function ChatFindings() {
   return (
-    <Section id="chat-findings">
+    <Section id="chat-findings" title="Six findings">
       <Stack spacing={0}>
         {intentFindings.map((finding, i) => (
           <Finding key={finding.n} n={Number(finding.n)} headline={finding.headline} divider={i > 0}>

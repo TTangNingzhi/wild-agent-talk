@@ -267,7 +267,7 @@ export const intentMultiLabel = {
 export const intentFindings = [
   {
     n: '1',
-    headline: 'Developers refine, they rarely specify upfront',
+    headline: 'Developers made highly iterative modifications, rarely specifying all needs upfront',
     evidence: [
       {
         kind: 'stat',
@@ -279,27 +279,27 @@ export const intentFindings = [
   },
   {
     n: '2',
-    headline: 'Developers report the symptom, the agent does the diagnosis',
+    headline: 'Developers report the symptom or error logs, the agent does the diagnosis',
     evidence: [
-      { kind: 'stat', value: '24.00%', label: 'of messages report a failure, the second largest category' },
-      { kind: 'quote', value: "table doesn't update until I refresh", label: 'No cause, no code' },
+      { kind: 'stat', value: '24.00%', label: 'of messages report a failure' },
+      { kind: 'quote', value: "table doesn't update until I refresh", label: 'Symptom only, no cause, no code' },
     ],
   },
   {
     n: '3',
-    headline: 'They ask what the system does, not what the code says',
+    headline: 'Focus on understanding system behavior and feature logic, not code details',
     evidence: [
       { kind: 'stat', value: '8.19%', label: 'ask to understand the project' },
       {
         kind: 'quote',
-        value: "I don't understand the results, does this test now invalidate the hypothesis?",
+        value: "How does the system determine the icon’s latitude?",
         label: 'Behavior level, not code level',
       },
     ],
   },
   {
     n: '4',
-    headline: 'Checking the work is the rarest thing they ask for',
+    headline: 'On validation, developers ask AI to do static review and runtime inspection',
     evidence: [
       { kind: 'stat', value: '3.99%', label: 'ask the agent to review code or inspect output' },
       {
@@ -311,19 +311,19 @@ export const intentFindings = [
   },
   {
     n: '5',
-    headline: 'Documentation is memory, written for the next session',
+    headline: 'Docs serves as the spec, plan, or progress update between developers and AI',
     evidence: [
-      { kind: 'stat', value: '6.85%', label: 'ask for docs, usually TODO.md or PROGRESS.md' },
+      { kind: 'stat', value: '6.85%', label: 'ask for docs, usually TODO.md, SPEC.md or PROGRESS.md' },
       {
         kind: 'quote',
-        value: 'create a prompt for the next chat to carry out all the next steps',
-        label: 'Handoff to a future session',
+        value: 'check whether the implementation is consistent with the design documents',
+        label: 'Spec-driven development',
       },
     ],
   },
   {
     n: '6',
-    headline: 'Developers tune how much autonomy the agent gets',
+    headline: 'Developers tune agent autonomy with context and behavioral constraints',
     evidence: [
       {
         kind: 'quote',
@@ -432,7 +432,7 @@ export const sessionLength = {
       title: 'Short sessions',
       range: '3 messages or fewer',
       sessions: '6,715',
-      lead: 'One shot, done',
+      lead: 'One shot task delegation or comprehension',
       intents: [
         { name: 'New Implementation', pair: '12.78% vs 4.71%' },
         { name: 'Documentation', pair: '9.75% vs 6.37%' },
@@ -448,7 +448,6 @@ export const sessionLength = {
       intents: [
         { name: 'Alignment Correction', pair: '7.85% vs 3.41%' },
         { name: 'Error Persistence', pair: '4.21% vs 1.06%' },
-        { name: 'Confirmation', pair: '2.95% vs 0.86%' },
       ],
     },
   ],
@@ -459,7 +458,7 @@ export const transitions = {
   method:
     'Markov lift: how much more likely a transition is than the target label on its own. Above 1 is reinforced.',
   selfLoop: 'Every subcategory repeats itself more than chance, lift 1.80 to 17.36.',
-  longestRun: 'Iterative Modification runs longest, up to 27 consecutive turns.',
+  longestRun: 'The longest consecutive Iterative Modification is up to 27 turns.',
   categoryIndex: [
     '1 Code Authoring',
     '2 Failure Reporting',
@@ -496,7 +495,7 @@ export const transitions = {
 
 /** Finding 10: what a session boundary preserves and what it resets. */
 export const sessionBoundaries = {
-  keeps: 'Task intent carries over: every subcategory still repeats across the break, lift 1.19 to 20.77.',
+  keeps: 'Every subcategory still repeats across the session break, lift 1.19 to 20.77.',
   resets: [
     { name: 'Confirmation', within: '6.08', across: 'near 0' },
     { name: 'Error Persistence', within: '5.19', across: '1.19' },
@@ -551,12 +550,12 @@ export const misalignValidation = {
     {
       name: 'Normative prior bias',
       share: '42.28%',
-      note: 'Flags deviations from its own idea of good agent behavior, with no developer complaint.',
+      note: 'Flags deviations from its own expectations of good agent behavior, with no developer complaint.',
     },
     {
       name: 'Observational blind spots',
       share: '57.72%',
-      note: 'Blames the agent using context the log never shows. Invisible agent action alone is 35.68%.',
+      note: 'Attributes failures to the agent based on context absent from the log (e.g., referenced project files).',
     },
   ],
   kept: '16,118 of 29,896',
@@ -589,7 +588,7 @@ export const misalignCodebook = {
 /** Live record browser shipped with the paper. */
 export const misalignAtlas = {
   url: 'https://coding-agent-misalignment.netlify.app/',
-  note: 'Every extracted record, filterable by all four annotation axes. Permissively licensed repositories only, so its counts are a subset of the paper.',
+  note: 'Every extracted record with all annotations. Permissively licensed repositories only, so its counts are a subset of the paper.',
 } as const
 
 /** Table 2: symptom distribution, all / IDE / CLI. */
@@ -617,61 +616,53 @@ export const misalignCauses = [
 export const misalignLabelNote =
   'Symptom and cause are multi-label, so columns sum past 100%. S8 (Other, 0.34%) is excluded.'
 
-/** Section 4.1 findings. */
-export const misalignFormFindings = [
+/**
+ * Four real episodes, drawn as diagrams instead of summarized as findings.
+ * Every quote is verbatim from Appendix A of the misalignment paper, except
+ * where marked redacted. `labels` link back to the taxonomy rows above.
+ */
+export const misalignEpisodes = [
   {
     n: 1,
-    headline: 'The top failure is not wrong code, it is an ignored instruction',
-    evidence: [
-      { value: '38.33%', label: 'Developer Constraint Violation, the largest symptom' },
-      { value: '73.68%', label: 'of those trace to plain instruction-following failure' },
+    key: 'terraform',
+    title: 'The blast radius left the codebase',
+    labels: [
+      { code: 'S3', name: 'Developer Constraint Violation', href: '#code-S3' },
+      { code: 'C6', name: 'Instruction-Following Failure', href: '#code-C6' },
+      { code: 'DS3', name: 'Hard to reverse', href: '#misalign-outcomes' },
+      { code: 'DL4', name: 'External state', href: '#misalign-outcomes' },
     ],
-    quote: 'Constraints span collaboration style, implementation strategy, and unauthorized destructive commands.',
+    note: 'Content warning: the developer turns are quoted unedited. The anger is part of the signal.',
   },
   {
     n: 2,
-    headline: 'Misread intent is a plausible guess at a vague ask',
-    evidence: [
-      { value: '26.95%', label: 'Misread Developer Intent' },
-      { value: '44.10%', label: 'follow an underspecified instruction the agent resolved on its own' },
+    key: 'defaults',
+    title: 'The default won over the instruction',
+    labels: [
+      { code: 'S3', name: 'Developer Constraint Violation', href: '#code-S3' },
+      { code: 'C5', name: 'Default-Driven Override', href: '#code-C5' },
     ],
-    quote: '"could we paginate?" became infinite scroll.',
   },
   {
     n: 3,
-    headline: 'Agents report success they never verified',
-    evidence: [
-      { value: '22.58%', label: 'Inaccurate Self-Reporting' },
-      { value: '27.56%', label: 'of those also claim a developer constraint was met' },
+    key: 'reporting',
+    title: 'Complete, one turn before the error',
+    labels: [
+      { code: 'S7', name: 'Inaccurate Self-Reporting', href: '#code-S7' },
+      { code: 'C7', name: 'Cannot Determine', href: '#code-C7' },
+      { code: 'DS1', name: 'Effort and trust', href: '#misalign-outcomes' },
     ],
-    quote: 'A partial or unverified state is consistently turned into a completion claim.',
   },
   {
     n: 4,
-    headline: 'Faulty code is a minority symptom, but it is the one that breaks things',
-    evidence: [
-      { value: '17.82%', label: 'Faulty Implementation, and only 8.49% in CLI' },
-      { value: '25.00%', label: 'of those reach real system damage, the highest of any symptom' },
+    key: 'slides',
+    title: 'A question turned into an edit',
+    labels: [
+      { code: 'S4', name: 'Self-Initiated Overreach', href: '#code-S4' },
+      { code: 'S2', name: 'Misread Developer Intent', href: '#code-S2' },
+      { code: 'C2', name: 'Scope Overreach', href: '#code-C2' },
+      { code: 'DS2', name: 'Easily reversed', href: '#misalign-outcomes' },
     ],
-    quote: 'Regressions, failed tests, compilation errors, API misuse.',
-  },
-  {
-    n: 5,
-    headline: 'Overreach turns a question into an edit',
-    evidence: [
-      { value: '10.20%', label: 'Self-Initiated Overreach, 66.99% caused by scope overreach' },
-      { value: '13.33%', label: 'developer takeover rate, the highest of any symptom' },
-    ],
-    quote: 'Asking why slide 2 is landscape got the deck rewritten.',
-  },
-  {
-    n: 6,
-    headline: 'A quarter of failures have no cause the log can show',
-    evidence: [
-      { value: '26.85%', label: 'Cannot Determine' },
-      { value: '49.50% / 48.17%', label: 'of faulty implementation and self-reporting episodes' },
-    ],
-    quote: 'The failure is visible in the conversation; its source is hidden in project or execution state.',
   },
 ] as const
 
@@ -699,37 +690,6 @@ export const misalignOutcomes = {
   resolverNote: 'Resolver is conditioned on resolved episodes (n = 1,504).',
 } as const
 
-/** Section 4.2 findings. */
-export const misalignOutcomeFindings = [
-  {
-    n: 7,
-    headline: 'Misalignment mostly costs developer effort, not the system',
-    evidence: [
-      { value: '90.50%', label: 'cost effort and trust only: redirect, correct, reassess' },
-      { value: '11 episodes', label: 'are hard to reverse, out of 16,118' },
-    ],
-    quote: 'The rare hard cases cross an authorization boundary: releases finalized, Git history rewritten, user pools destroyed.',
-  },
-  {
-    n: 8,
-    headline: 'When damage does land, it lands on code, unless it escapes the codebase',
-    evidence: [
-      { value: '75.80%', label: 'of damaged episodes hit code or task state' },
-      { value: '45.45%', label: 'of the hard-to-reverse ones hit external state instead' },
-    ],
-    quote: 'Recovery gets harder the moment misalignment leaves the local codebase.',
-  },
-  {
-    n: 9,
-    headline: 'Almost nothing gets fixed until the developer says so',
-    evidence: [
-      { value: '91.49%', label: 'of resolved episodes needed explicit pushback' },
-      { value: '2.99%', label: 'were self-corrected by the agent' },
-    ],
-    quote: 'Resolution is visible for only 9.33% of episodes: logs report failures more reliably than successes.',
-  },
-] as const
-
 /** Section 4.3: IDE versus CLI. */
 export const misalignModality = {
   rows: [
@@ -741,59 +701,35 @@ export const misalignModality = {
     { name: 'Damage to project or external state', ide: '14.30%', cli: '38.85%' },
   ],
   note: 'All differences significant at p < 0.001.',
-  findings: [
-    {
-      n: 10,
-      headline: 'IDE misaligns more often per turn, CLI misaligns further from the code',
-      evidence: [
-        { value: '0.132 vs 0.051', label: 'misalignment per user turn, IDE against CLI' },
-        { value: '38.85% vs 14.30%', label: 'CLI damage reaching project or external state' },
-      ],
-      quote: 'Tight copilot-style collaboration versus broader delegated tasks with deploy and version-control reach.',
-    },
-    {
-      n: 11,
-      headline: 'CLI drifts from constraints, IDE writes wrong code',
-      evidence: [
-        { value: '49.49% vs 32.26%', label: 'constraint violation, CLI against IDE' },
-        { value: '22.89% vs 8.49%', label: 'faulty implementation, IDE against CLI' },
-      ],
-      quote: 'Same models, different failure profile, driven by the interface.',
-    },
-  ],
 } as const
 
 /** Section 4.4: structural and temporal effects. */
 export const misalignPersistence = {
-  findings: [
-    {
-      n: 12,
-      headline: 'Failures cluster inside a session',
-      evidence: [
-        { value: 'lift 1.39', label: 'misread intent with self-initiated overreach' },
-        { value: 'lift 0.71', label: 'constraint violation with faulty implementation, a distinct mode' },
-      ],
-      quote: 'Faulty implementation and inaccurate self-reporting also co-occur above chance (1.20).',
-    },
-    {
-      n: 13,
-      headline: 'Misalignment carries into the next session',
-      evidence: [
-        { value: '0.519 vs 0.336', label: 'chance the next session in the repo also misaligns, a 54.46% increase' },
-        { value: '4.10 and 1.61', label: 'self-persistence for execution errors and faulty implementation' },
-      ],
-      quote: 'These recur until someone fixes the source, not the symptom.',
-    },
-    {
-      n: 14,
-      headline: 'The rate is falling, the mix is shifting',
-      evidence: [
-        { value: 'p < 10⁻⁴⁰', label: 'misalignment per user turn declines, Feb 2025 to Apr 2026' },
-        { value: 'S3 and S7 rising', label: 'while S1, S4, and S5 fall in share, within both IDE and CLI' },
-      ],
-      quote: 'Agents write better code than they did. They follow instructions and report honestly no better than they did.',
-    },
-  ],
+  withinSession: {
+    title: 'Within-session co-occurrence',
+    patterns: [
+      {
+        label: 'Above chance',
+        text: 'Faulty Implementation and Inaccurate Self-Reporting co-occur, lift 1.20.',
+      },
+      {
+        label: 'Below chance',
+        text: 'Developer Constraint Violation co-occurs less than chance with Wrong Project Diagnosis and Faulty Implementation, lifts 0.75 and 0.71.',
+      },
+    ],
+  },
+  crossSession: {
+    title: 'Cross-session continuity',
+    text: 'When one session has a misalignment, the next session in the same repository is 54.46% more likely to have one too.',
+  },
+  temporal: {
+    title: 'Temporal trends',
+    evidence: [
+      { value: 'p < 10⁻⁴⁰', label: 'misalignment per user turn declines, Feb 2025 to Apr 2026' },
+      { value: 'S3 and S7 rising', label: 'while S1, S4, and S5 fall in share, within both IDE and CLI' },
+    ],
+    quote: 'Agents write better code than they did. They follow instructions and report honestly no better than they did.',
+  },
 } as const
 
 /** Finding 11: how opening messages differ from later turns. */

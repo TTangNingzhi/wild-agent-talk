@@ -10,15 +10,26 @@ import Typography from '@mui/material/Typography'
 
 import { accentMain } from '../accents'
 import heatmap from '../assets/figures/symptom-cause-heatmap.png'
-import MisalignFinding from '../components/MisalignFinding'
+import EpisodeCard from '../components/EpisodeCard'
+import DefaultOverride from '../components/episodes/DefaultOverride'
+import PrematureCompletion from '../components/episodes/PrematureCompletion'
+import SlideOrientation from '../components/episodes/SlideOrientation'
+import TerraformBlastRadius from '../components/episodes/TerraformBlastRadius'
 import Reveal from '../components/Reveal'
 import Section from '../components/Section'
 import {
   misalignCauses,
-  misalignFormFindings,
+  misalignEpisodes,
   misalignLabelNote,
   misalignSymptoms,
 } from '../content/dataset'
+
+const diagrams = {
+  slides: SlideOrientation,
+  terraform: TerraformBlastRadius,
+  defaults: DefaultOverride,
+  reporting: PrematureCompletion,
+} as const
 
 const accent = 'error' as const
 
@@ -81,7 +92,7 @@ function AxisTable({ head, rows }: { head: string; rows: readonly Row[] }) {
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <TableRow key={row.code}>
+            <TableRow key={row.code} id={`code-${row.code}`} sx={{ scrollMarginTop: 96 }}>
               <TableCell sx={{ fontFamily: '"Google Sans", sans-serif', fontWeight: 600 }}>
                 <Box component="span" sx={{ color: 'text.disabled', pr: 1 }}>
                   {row.code}
@@ -131,10 +142,21 @@ export default function MisalignForms() {
         </Stack>
       </Reveal>
 
-      <Stack spacing={0}>
-        {misalignFormFindings.map((item, i) => (
-          <MisalignFinding key={item.n} item={item} divider={i > 0} />
-        ))}
+      <Stack spacing={0} sx={{ pt: 1 }}>
+        {misalignEpisodes.map((episode) => {
+          const Diagram = diagrams[episode.key]
+          return (
+            <EpisodeCard
+              key={episode.key}
+              n={episode.n}
+              title={episode.title}
+              labels={episode.labels}
+              note={'note' in episode ? episode.note : undefined}
+            >
+              <Diagram />
+            </EpisodeCard>
+          )
+        })}
       </Stack>
     </Section>
   )

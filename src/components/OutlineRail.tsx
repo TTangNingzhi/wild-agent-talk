@@ -58,7 +58,6 @@ export default function OutlineRail({ sections, activeId }: OutlineRailProps) {
   const activeSection = activeIndex >= 0 ? sections[activeIndex] : undefined
   const activeRq =
     activeSection?.rq ?? (activeId in researchQuestions ? (activeId as ResearchQuestion) : undefined)
-  const activePart = activeSection?.group ?? parts.find((p) => p.groups.some((g) => g.rq === activeRq))?.name
 
   /** The outline row that owns the viewport, skipping sections the rail hides. */
   const activeRowId =
@@ -86,8 +85,6 @@ export default function OutlineRail({ sections, activeId }: OutlineRailProps) {
     >
       <Stack spacing={0} sx={{ minHeight: '100%', justifyContent: 'center', py: 2 }}>
         {parts.map((part) => {
-          const inPart = part.name === activePart
-
           return (
             <Box key={part.name} sx={{ pt: 2 }}>
               <Box
@@ -99,7 +96,7 @@ export default function OutlineRail({ sections, activeId }: OutlineRailProps) {
                   pl: 2,
                   py: 0.25,
                   borderLeft: '2px solid',
-                  borderColor: inPart ? accentMain(part.accent) : 'divider',
+                  borderColor: accentMain(part.accent),
                 }}
               >
                 <Typography
@@ -107,7 +104,7 @@ export default function OutlineRail({ sections, activeId }: OutlineRailProps) {
                   sx={{
                     fontSize: '0.875rem',
                     lineHeight: 1.6,
-                    color: inPart ? accentText(part.accent) : 'text.disabled',
+                    color: accentText(part.accent),
                     transition: 'color 220ms',
                   }}
                 >
@@ -146,7 +143,7 @@ export default function OutlineRail({ sections, activeId }: OutlineRailProps) {
                         component="a"
                         href={`#${section.id}`}
                         aria-current={section.id === activeRowId ? 'true' : undefined}
-                        sx={rowSx(section.id === activeRowId, part.accent, group.rq ? 3.5 : 2)}
+                        sx={rowSx(section.id === activeRowId, part.accent, 3.5)}
                       >
                         <Typography
                           sx={{

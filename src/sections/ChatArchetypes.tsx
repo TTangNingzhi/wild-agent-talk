@@ -23,7 +23,7 @@ export default function ChatArchetypes() {
   return (
     <Finding
       n={8}
-      headline="Longer sessions fall into six recurring archetypes"
+      headline="Longer sessions fall into six recurring archetypes by clustering"
       accent={accent}
     >
       <Reveal>

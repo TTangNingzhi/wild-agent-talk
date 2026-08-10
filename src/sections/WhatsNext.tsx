@@ -16,7 +16,11 @@ export default function WhatsNext() {
   return (
     <Section id="whats-next" title="What's next?">
       <Reveal>
-        <Typography variant="h4" component="p" sx={{ pb: 1 }}>
+        <Typography
+          variant="subtitle1"
+          component="p"
+          sx={{ pb: 1, fontSize: '1.5rem', lineHeight: 1.5 }}
+        >
           {whatsNext.established}
         </Typography>
       </Reveal>
@@ -35,31 +39,27 @@ export default function WhatsNext() {
               key={problem.n}
               variant="outlined"
               sx={{
-                position: 'relative',
                 height: '100%',
-                overflow: 'hidden',
                 p: 3,
-                pt: 3.25,
                 bgcolor: tint,
                 borderColor: 'divider',
               }}
             >
-              <Box
-                sx={{ position: 'absolute', inset: '0 0 auto 0', height: 4, bgcolor: accentMain(accent) }}
-              />
-              <Stack spacing={1}>
+              <Stack spacing={1.25}>
                 <Typography variant="overline" color="text.secondary">
                   Open problem {problem.n}
                 </Typography>
                 <Typography variant="h3" component="h3">
                   {problem.title}
                 </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  {problem.lead}
-                </Typography>
                 <Stack component="ul" spacing={0.75} sx={{ m: 0, pl: 2.5, pt: 0.5 }}>
                   {problem.points.map((point) => (
-                    <Typography key={point} component="li" variant="body1">
+                    <Typography
+                      key={point}
+                      component="li"
+                      variant="body1"
+                      sx={{ fontSize: '1.125rem', lineHeight: 1.55 }}
+                    >
                       {point}
                     </Typography>
                   ))}
@@ -70,36 +70,30 @@ export default function WhatsNext() {
         </Box>
       </Reveal>
 
-      <Reveal delay={200}>
-        <Stack spacing={2} sx={{ pt: 2, borderTop: '1px solid', borderColor: 'divider' }}>
-          <Typography variant="overline" sx={{ color: accentMain(accent) }}>
-            {whatsNext.summer.label}
-          </Typography>
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },
-              columnGap: 4,
-              rowGap: 2,
-            }}
-          >
-            {whatsNext.summer.items.map((item) => (
-              <Stack
-                key={item.name}
-                spacing={0.5}
-                sx={{ pl: 2, borderLeft: '3px solid', borderColor: 'grey.300' }}
-              >
-                <Typography variant="overline" color="text.secondary">
-                  {item.note}
-                </Typography>
-                <Typography variant="h5" component="p">
-                  {item.name}
-                </Typography>
-              </Stack>
-            ))}
-          </Box>
-        </Stack>
-      </Reveal>
+      <Stack spacing={1.5} sx={{ pt: 2.5, borderTop: '1px solid', borderColor: 'divider' }}>
+        <Typography variant="overline" sx={{ color: accentMain(accent) }}>
+          {whatsNext.summer.label}
+        </Typography>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },
+            columnGap: 4,
+            rowGap: 2,
+          }}
+        >
+          {whatsNext.summer.items.map((item) => (
+            <Typography
+              key={item}
+              variant="h4"
+              component="p"
+              sx={{ fontSize: '1.375rem', fontWeight: 400, lineHeight: 1.45 }}
+            >
+              {item}
+            </Typography>
+          ))}
+        </Box>
+      </Stack>
     </Section>
   )
 }

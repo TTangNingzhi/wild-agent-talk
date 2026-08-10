@@ -27,7 +27,7 @@ const consequences = [
 /** How public agent sessions become collectable at all. */
 export default function DataProvenance() {
   return (
-    <Section id="data-provenance" title="Two routes into public Git history">
+    <Section id="data-provenance" title="Two routes into public Git repository">
       <Reveal>
         <ProvenanceDiagram />
       </Reveal>

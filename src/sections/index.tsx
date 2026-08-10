@@ -134,7 +134,7 @@ export const sections: SectionEntry[] = [
 
   // Programming by Chat (ASE 2026)
   {
-    id: 'part-1',
+    id: 'programming-by-chat',
     label: 'Programming by Chat',
     kind: 'slide',
     group: 'Programming by Chat',
@@ -143,9 +143,8 @@ export const sections: SectionEntry[] = [
     render: () => (
       <PartDivider
         accent="warning"
-        id="part-1"
+        id="programming-by-chat"
         title="Programming by Chat"
-        venue={chatPaper.venue}
         paperTitle={chatPaper.title}
         authors={chatPaper.authors}
         affiliations={chatPaper.affiliations}
@@ -191,7 +190,7 @@ export const sections: SectionEntry[] = [
 
   // Coding Agent Misalignment (EMNLP 2026, under submission)
   {
-    id: 'part-2',
+    id: 'coding-agent-misalignment',
     label: 'Coding Agent Misalignment',
     kind: 'slide',
     group: 'Coding Agent Misalignment',
@@ -200,9 +199,8 @@ export const sections: SectionEntry[] = [
     render: () => (
       <PartDivider
         accent="error"
-        id="part-2"
+        id="coding-agent-misalignment"
         title="Coding Agent Misalignment"
-        venue={`${misalignPaper.venue}, ${misalignPaper.status}`}
         paperTitle={misalignPaper.title}
         authors={misalignPaper.authors}
         affiliations={misalignPaper.affiliations}

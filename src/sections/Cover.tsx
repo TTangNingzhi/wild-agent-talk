@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box'
+import Link from '@mui/material/Link'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
@@ -68,14 +69,22 @@ export default function Cover() {
       >
         <Stack spacing={1}>
           <Stack direction="row" spacing={1.5} sx={{ alignItems: 'baseline' }}>
-            <Typography variant="h4" component="p">
-              {talk.speaker.name}
+            <Typography variant="h4" component="p" sx={{ fontSize: '1.5rem' }}>
+              <Link
+                href={talk.speaker.homepage}
+                target="_blank"
+                rel="noopener noreferrer"
+                color="inherit"
+                underline="hover"
+              >
+                {talk.speaker.name}
+              </Link>
             </Typography>
             <Typography
               component="span"
               sx={{
                 fontFamily: '"Google Sans Code", monospace',
-                fontSize: '1rem',
+                fontSize: '1.125rem',
                 color: 'text.disabled',
               }}
             >
@@ -83,20 +92,25 @@ export default function Cover() {
             </Typography>
           </Stack>
           {talk.speaker.roles.map((role) => (
-            <Typography key={role} variant="body1" color="text.secondary">
+            <Typography
+              key={role}
+              variant="body1"
+              color="text.secondary"
+              sx={{ fontSize: '1.1875rem' }}
+            >
               {role}
             </Typography>
           ))}
         </Stack>
 
         <Stack spacing={0.75} sx={{ alignItems: { xs: 'flex-start', sm: 'flex-end' } }}>
-          <Typography variant="overline" color="text.disabled">
+          <Typography variant="overline" color="text.disabled" sx={{ fontSize: '1.0625rem' }}>
             Presented to
           </Typography>
-          <Typography variant="h6" component="p">
+          <Typography variant="h6" component="p" sx={{ fontSize: '1.1875rem' }}>
             {talk.venue}
           </Typography>
-          <Typography variant="body1" color="text.secondary">
+          <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1.1875rem' }}>
             {talk.date}
           </Typography>
         </Stack>

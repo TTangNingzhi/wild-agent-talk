@@ -3,10 +3,9 @@ import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 
 import { accentMain } from '../accents'
-import MisalignFinding from '../components/MisalignFinding'
 import Reveal from '../components/Reveal'
 import Section from '../components/Section'
-import { misalignOutcomeFindings, misalignOutcomes } from '../content/dataset'
+import { misalignOutcomes } from '../content/dataset'
 
 const accent = 'error' as const
 
@@ -90,11 +89,21 @@ export default function MisalignOutcomes() {
         </Box>
       </Reveal>
 
-      <Stack spacing={0}>
-        {misalignOutcomeFindings.map((item, i) => (
-          <MisalignFinding key={item.n} item={item} divider={i > 0} />
-        ))}
-      </Stack>
+      <Reveal>
+        <Typography
+          variant="h5"
+          component="p"
+          sx={{ pt: { xs: 2.5, md: 3 }, fontSize: '1.375rem', fontWeight: 400, lineHeight: 1.55 }}
+        >
+          <Box component="strong" sx={{ fontWeight: 600 }}>
+            Takeaway:
+          </Box>{' '}
+          Most episodes do not damage the system. But that does not mean agents are safe:{' '}
+          {misalignOutcomes.resolver[0].pct.toFixed(2)}% of visible fixes happen only after a
+          developer pushes back. Developers catch the problem and absorb the cost before it can
+          spread.
+        </Typography>
+      </Reveal>
     </Section>
   )
 }

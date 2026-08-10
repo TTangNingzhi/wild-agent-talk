@@ -22,7 +22,7 @@ export function ChatBoundaries() {
   return (
     <Finding
       n={10}
-      headline="A break resets the conversation, not the task"
+      headline="Opening a new session refreshes the context while carrying out the same task"
       accent={accent}
     >
       <Reveal>

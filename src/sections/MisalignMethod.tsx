@@ -21,16 +21,19 @@ import {
 const accent = 'error' as const
 const tint = 'rgba(234, 67, 53, 0.04)'
 const mono = '"Google Sans Code", monospace'
+const promptViewer = 'https://coding-agent-misalignment.netlify.app/prompt-viewer'
 
 /** One stage of the pipeline: number and title on the left, evidence on the right. */
 function Stage({
   step,
   title,
+  promptHref,
   lead,
   children,
 }: {
   step: string
   title: string
+  promptHref?: string
   lead: string
   children?: ReactNode
 }) {
@@ -52,7 +55,21 @@ function Stage({
             Step {step}
           </Typography>
           <Typography variant="h3" component="h3">
-            {title}
+            {promptHref ? (
+              <Link
+                href={promptHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                underline="hover"
+                color="inherit"
+                sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.75 }}
+              >
+                {title}
+                <OpenInNewRoundedIcon sx={{ fontSize: 20, color: accentText(accent) }} />
+              </Link>
+            ) : (
+              title
+            )}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {lead}
@@ -108,6 +125,7 @@ export default function MisalignMethod() {
         <Stage
           step="2"
           title="Extraction"
+          promptHref={`${promptViewer}?doc=extraction`}
           lead="One structured record per breakdown, induced bottom-up from the whole session."
         >
           <Card label="Extracted record">
@@ -152,6 +170,7 @@ export default function MisalignMethod() {
         <Stage
           step="3"
           title="Validation"
+          promptHref={`${promptViewer}?doc=validation`}
           lead="A single extraction pass produces systematic false positives, in two recurring shapes."
         >
           <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ '& > *': { flex: 1 } }}>
@@ -194,6 +213,7 @@ export default function MisalignMethod() {
         <Stage
           step="4"
           title="Annotation"
+          promptHref={`${promptViewer}?doc=annotation`}
           lead="Four axes, three rounds of abductive coding until saturation."
         >
           <Box

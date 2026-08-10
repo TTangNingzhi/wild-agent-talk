@@ -53,7 +53,7 @@ function Bar({ pct, main }: { pct: number; main?: boolean }) {
 /** RQ1: the intent taxonomy, how it was built, and how the messages fall across it. */
 export default function ChatIntents() {
   return (
-    <Section id="chat-intents">
+    <Section id="chat-intents" title="Intent taxonomy">
       <Reveal>
         <MethodFlow steps={intentMethod} accent={accent} />
       </Reveal>

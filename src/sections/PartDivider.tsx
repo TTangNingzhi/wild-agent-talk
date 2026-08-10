@@ -1,5 +1,4 @@
 import Box from '@mui/material/Box'
-import Chip from '@mui/material/Chip'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 
@@ -17,8 +16,6 @@ type PartDividerProps = {
   authors?: string
   /** Institutions behind the author list. */
   affiliations?: string
-  /** Venue chip, e.g. "ASE 2026". */
-  venue?: string
   accent?: Accent
 }
 
@@ -30,7 +27,6 @@ export default function PartDivider({
   paperTitle,
   authors,
   affiliations,
-  venue,
   accent = 'primary',
 }: PartDividerProps) {
   const color = accentMain(accent)
@@ -38,15 +34,10 @@ export default function PartDivider({
   return (
     <Slide id={id}>
       <Stack spacing={{ xs: 3, md: 4 }} sx={{ width: '100%' }}>
-        {(kicker || venue) && (
-          <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-            {kicker && (
-              <Typography variant="overline" sx={{ color }}>
-                {kicker}
-              </Typography>
-            )}
-            {venue && <Chip variant="outlined" label={venue} sx={{ color: 'text.secondary' }} />}
-          </Stack>
+        {kicker && (
+          <Typography variant="overline" sx={{ color }}>
+            {kicker}
+          </Typography>
         )}
         <Typography
           variant="h1"
@@ -56,17 +47,28 @@ export default function PartDivider({
         </Typography>
         <Box sx={{ width: '100%', height: 5, bgcolor: color }} />
         {paperTitle && (
-          <Typography variant="subtitle1" sx={{ fontSize: 'clamp(1.125rem, 1.35vw, 1.375rem)' }}>
+          <Typography
+            variant="subtitle1"
+            sx={{ fontSize: 'clamp(1.375rem, 1.7vw, 1.75rem)', lineHeight: 1.4 }}
+          >
             {paperTitle}
           </Typography>
         )}
         {authors && (
           <Stack spacing={0.75}>
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              sx={{ fontSize: '1.1875rem', lineHeight: 1.55 }}
+            >
               {authors}
             </Typography>
             {affiliations && (
-              <Typography variant="caption" color="text.disabled">
+              <Typography
+                variant="body2"
+                color="text.disabled"
+                sx={{ fontSize: '1.0625rem', lineHeight: 1.5 }}
+              >
                 {affiliations}
               </Typography>
             )}
