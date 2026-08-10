@@ -1,8 +1,10 @@
 import { Fragment, useMemo } from 'react'
 import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
 
 import OutlineRail from './components/OutlineRail'
 import RqMarker from './components/RqMarker'
+import { talk } from './content/talk'
 import useActiveSection from './hooks/useActiveSection'
 import { RAIL_GAP, shellSx } from './layout'
 import { outline, researchQuestions, sections } from './sections'
@@ -31,6 +33,26 @@ export default function App() {
             <Fragment key={node.section.id}>{node.section.render()}</Fragment>
           ),
         )}
+        <Box
+          component="footer"
+          sx={{
+            pt: { xs: 2, md: 3 },
+            pb: { xs: 14, md: 20 },
+            textAlign: 'right',
+          }}
+        >
+          <Typography
+            variant="body2"
+            color="text.disabled"
+            sx={{
+              fontFamily: '"Google Sans", sans-serif',
+              fontSize: '1.0625rem',
+              letterSpacing: '0.01em',
+            }}
+          >
+            {talk.copyright}
+          </Typography>
+        </Box>
       </Box>
     </Box>
   )

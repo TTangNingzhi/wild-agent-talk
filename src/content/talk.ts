@@ -4,6 +4,7 @@ import chatCover from '../assets/papers/programming-by-chat.png'
 /** Talk-level metadata. Single source of truth for the cover and the closing slide. */
 export const talk = {
   title: 'Coding Agents in the Wild',
+  copyright: '© 2026 Ningzhi Tang',
   speaker: {
     name: 'Ningzhi Tang',
     homepage: 'https://www.nztang.com/',

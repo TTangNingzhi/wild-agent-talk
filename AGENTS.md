@@ -4,7 +4,7 @@ A semi-slide-style presentation website for a live research talk at Google DevAI
 
 ## Layout: semi-slide
 
-One continuous scrolling page, not a slide deck. A few full-viewport "slide moments" (cover, part dividers, headline findings); everything else flows like a well-designed article. Smooth scrolling, stable anchor ids per section, large type that reads well on a projector.
+One continuous scrolling page, not a slide deck. The cover is full viewport; paper part dividers and headline findings create compact slide moments within the article flow. Smooth scrolling, stable semantic anchor ids per section, large type that reads well on a projector.
 
 ## Style
 
@@ -32,7 +32,7 @@ These come from direct review feedback; do not regress them.
 
 The talk has exactly four levels, and each one owns a single visual token. Do not invent a fifth, and do not reuse a token for something else.
 
-1. **Part** (Opening, each paper, Closing): a full-viewport `PartDivider`, one accent color, one top-level heading in the rail.
+1. **Part** (Opening, each paper, Closing): one accent color and one top-level heading in the rail. Opening uses `Cover`, the two paper parts use `PartDivider`, and Closing begins with the `What's next?` section.
 2. **Research question** (Data, RQ1, RQ2, ...): an `RqMarker` band, rendered once above the first section of the run, never per section. Registered as `rq` on the section entry; `App` inserts the band wherever the value changes, and the key doubles as the scroll anchor.
 3. **Section**: an `h2` title, and the last level that appears in the rail. `Section` has no label slot above the title; if a section seems to need one, it usually belongs under a different RQ.
 4. **Finding**: a `Finding` block inside a section, its number beside an `h3` claim, evidence underneath. Every numbered finding in either paper uses this same block, whether its evidence is two stats or a full figure, and findings are never navigation.
