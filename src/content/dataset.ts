@@ -586,6 +586,12 @@ export const misalignCodebook = {
   quality: 'Percent agreement between two researchers, and LLM judge accuracy against the adjudicated gold standard.',
 } as const
 
+/** Live record browser shipped with the paper. */
+export const misalignAtlas = {
+  url: 'https://coding-agent-misalignment.netlify.app/',
+  note: 'Every extracted record, filterable by all four annotation axes. Permissively licensed repositories only, so its counts are a subset of the paper.',
+} as const
+
 /** Table 2: symptom distribution, all / IDE / CLI. */
 export const misalignSymptoms = [
   { code: 'S3', name: 'Developer Constraint Violation', desc: 'Violates an explicit developer constraint', all: 38.33, ide: 32.26, cli: 49.49 },

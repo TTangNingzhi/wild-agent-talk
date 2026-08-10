@@ -1,13 +1,16 @@
+import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded'
 import Box from '@mui/material/Box'
+import Link from '@mui/material/Link'
 import Paper from '@mui/material/Paper'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import type { ReactNode } from 'react'
 
-import { accentMain } from '../accents'
+import { accentMain, accentText } from '../accents'
 import Reveal from '../components/Reveal'
 import Section from '../components/Section'
 import {
+  misalignAtlas,
   misalignAxes,
   misalignCodebook,
   misalignRecord,
@@ -248,6 +251,50 @@ export default function MisalignMethod() {
           </Stack>
         </Stage>
       </Stack>
+
+      <Reveal>
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          spacing={1}
+          sx={{ alignItems: { sm: 'baseline' }, justifyContent: 'space-between', pb: 1 }}
+        >
+          <Typography variant="body2" color="text.secondary">
+            {misalignAtlas.note}
+          </Typography>
+          <Link
+            href={misalignAtlas.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            underline="hover"
+            sx={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 0.5,
+              color: accentText(accent),
+              fontFamily: '"Google Sans", sans-serif',
+              fontSize: '1rem',
+              fontWeight: 500,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Open full screen
+            <OpenInNewRoundedIcon sx={{ fontSize: 17 }} />
+          </Link>
+        </Stack>
+        <Box
+          component="iframe"
+          src={misalignAtlas.url}
+          title="Coding Agent Misalignment Atlas, a filterable browser over every extracted record"
+          sx={{
+            display: 'block',
+            width: '100%',
+            height: { xs: 480, md: 760 },
+            border: '1px solid',
+            borderColor: 'divider',
+            borderRadius: 1,
+          }}
+        />
+      </Reveal>
     </Section>
   )
 }

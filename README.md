@@ -3,7 +3,7 @@
 Presentation site for a live research talk at Google DevAI Research (Ningzhi Tang, August 10, 2026), covering two papers:
 
 - **Programming by Chat** (ASE 2026): a behavioral analysis of 11,579 real-world AI-assisted IDE sessions.
-- **How Coding Agents Fail Their Users** (EMNLP 2026, under submission): developer-agent misalignment across 20,574 real-world sessions.
+- **How Coding Agents Fail Their Users** (under submission): developer-agent misalignment across 20,574 real-world sessions.
 
 LaTeX sources for both papers live in `sources/` (untracked) and are the reference for every number on the page.
 
