@@ -5,7 +5,6 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 
 import BrandRule from '../components/BrandRule'
 import Slide from '../components/Slide'
-import { accentMain, type Accent } from '../accents'
 import { papers, talk } from '../content/talk'
 
 /** Staggered fade-up, applied once on mount. Disabled under reduced motion. */
@@ -35,23 +34,20 @@ export default function Cover() {
           spacing={{ xs: 2.5, md: 5 }}
           sx={{ ...riseIn(200), '& > *': { flex: 1, minWidth: 0 } }}
         >
-          {papers.map((paper) => {
-            const color = accentMain(paper.accent as Accent)
-            return (
+          {papers.map((paper) => (
               <Stack
                 key={paper.key}
                 spacing={0.75}
-                sx={{ borderLeft: '3px solid', borderColor: color, pl: 2 }}
+                sx={{ borderLeft: '3px solid', borderColor: 'divider', pl: 2 }}
               >
-                <Typography variant="overline" sx={{ color }}>
+                <Typography variant="overline" color="text.primary">
                   {paper.number} {paper.short}
                 </Typography>
                 <Typography variant="subtitle1" color="text.secondary">
                   {paper.question}
                 </Typography>
               </Stack>
-            )
-          })}
+          ))}
         </Stack>
       </Stack>
 

@@ -4,12 +4,62 @@ import type { Accent } from '../accents'
 
 import Placeholder from '../components/Placeholder'
 import Section from '../components/Section'
+import { papers } from '../content/talk'
+import ChatFindings from './ChatFindings'
+import ChatIntents from './ChatIntents'
 import Cover from './Cover'
 import DataAccess from './DataAccess'
 import DataProvenance from './DataProvenance'
 import DataScale from './DataScale'
 import PartDivider from './PartDivider'
 import Papers from './Papers'
+import SessionDynamics from './SessionDynamics'
+import SessionShapes from './SessionShapes'
+
+const chatPaper = papers.find((paper) => paper.key === 'chat')!
+const misalignPaper = papers.find((paper) => paper.key === 'misalignment')!
+
+/**
+ * The middle level of the talk: a run of sections that answers one question.
+ * Rendered once as a band above its first section, and once as a sub-heading
+ * in the rail. Keys are also the scroll anchors.
+ */
+export const researchQuestions = {
+  data: {
+    label: 'Data',
+    question: 'Where do real coding agent sessions come from?',
+  },
+  'chat-rq1': {
+    label: 'RQ1',
+    question: 'What do developers ask coding agents to do?',
+  },
+  'chat-rq2': {
+    label: 'RQ2',
+    question: 'What archetypes and dynamics shape a session?',
+  },
+  'misalign-method': {
+    label: 'Method',
+    question: 'How do you find real failures in 20,574 sessions?',
+  },
+  'misalign-rq1': {
+    label: 'RQ1',
+    question: 'What forms does misalignment take, and why?',
+  },
+  'misalign-rq2': {
+    label: 'RQ2',
+    question: 'What does it cost, and how does it get repaired?',
+  },
+  'misalign-rq3': {
+    label: 'RQ3',
+    question: 'Does the interface change the failure?',
+  },
+  'misalign-rq4': {
+    label: 'RQ4',
+    question: 'Does misalignment persist across sessions?',
+  },
+} as const
+
+export type ResearchQuestion = keyof typeof researchQuestions
 
 export type SectionEntry = {
   id: string
@@ -17,11 +67,13 @@ export type SectionEntry = {
   label: string
   /** Slide moments get a filled nav marker and no scroll offset. */
   kind: 'slide' | 'section'
-  /** Outline grouping shown as a heading in the rail. */
+  /** Part of the talk. Drives accent color and the top level of the rail. */
   group?: string
-  /** Brand color for this part, applied to eyebrows, rules, and the rail. */
+  /** Question this section answers. Consecutive sections share one marker. */
+  rq?: ResearchQuestion
+  /** Brand color for this part, applied to markers, badges, and the rail. */
   accent?: Accent
-  /** False for supporting sections that should map to the previous outline item. */
+  /** False for part dividers and supporting sections the rail should skip. */
   showInOutline?: boolean
   render: () => ReactNode
 }
@@ -52,7 +104,8 @@ export const sections: SectionEntry[] = [
     id: 'data-access',
     label: 'The access gap',
     kind: 'section',
-    group: 'Data',
+    group: 'Opening',
+    rq: 'data',
     accent: 'primary',
     render: () => <DataAccess />,
   },
@@ -60,7 +113,8 @@ export const sections: SectionEntry[] = [
     id: 'data-provenance',
     label: 'Public trajectories',
     kind: 'section',
-    group: 'Data',
+    group: 'Opening',
+    rq: 'data',
     accent: 'primary',
     render: () => <DataProvenance />,
   },
@@ -68,94 +122,86 @@ export const sections: SectionEntry[] = [
     id: 'data-scale',
     label: 'Corpus',
     kind: 'section',
-    group: 'Data',
-    accent: 'primary',
+    group: 'Opening',
+    rq: 'data',
+    accent: 'warning',
     render: () => <DataScale />,
   },
 
-  // Part I: Programming by Chat (ASE 2026)
+  // Programming by Chat (ASE 2026)
   {
     id: 'part-1',
     label: 'Programming by Chat',
     kind: 'slide',
-    group: 'Part I',
-    accent: 'primary',
+    group: 'Programming by Chat',
+    accent: 'warning',
+    showInOutline: false,
     render: () => (
       <PartDivider
-        accent="primary"
+        accent="warning"
         id="part-1"
-        kicker="Part I"
         title="Programming by Chat"
-        venue="ASE 2026"
-        question="What do developers actually say to AI coding assistants, and how do sessions unfold?"
+        venue={chatPaper.venue}
+        paperTitle={chatPaper.title}
+        authors={chatPaper.authors}
+        affiliations={chatPaper.affiliations}
       />
     ),
   },
   {
-    id: 'chat-data',
-    label: 'Dataset',
-    kind: 'section',
-    group: 'Part I',
-    accent: 'primary',
-    showInOutline: false,
-    render: () => (
-      <Section id="chat-data" eyebrow="Data" title="Inside the IDE conversation" accent="primary">
-        <Placeholder note="11,579 sessions, 1,300 repositories, 899 developers, Cursor and GitHub Copilot. Chat histories committed to public repos: self-directed work, not researcher-assigned tasks." />
-      </Section>
-    ),
-  },
-  {
     id: 'chat-intents',
-    label: 'What developers say',
+    label: 'Intent taxonomy',
     kind: 'section',
-    group: 'Part I',
-    accent: 'primary',
-    render: () => (
-      <Section id="chat-intents" eyebrow="RQ1" title="What developers ask agents to do" accent="primary">
-        <Placeholder note="A multi-label taxonomy of 7 main categories and 20 subcategories, applied to all 74,998 messages by an LLM classifier validated against 400 human-annotated messages." />
-      </Section>
-    ),
+    group: 'Programming by Chat',
+    rq: 'chat-rq1',
+    accent: 'warning',
+    render: () => <ChatIntents />,
   },
   {
-    id: 'chat-archetypes',
-    label: 'Session shapes',
+    id: 'chat-findings',
+    label: 'Six findings',
     kind: 'section',
-    group: 'Part I',
-    accent: 'primary',
-    render: () => (
-      <Section id="chat-archetypes" eyebrow="RQ2" title="Six ways sessions unfold" accent="primary">
-        <Placeholder note="Sessions as ordered intent sequences, clustered by hierarchy-aware edit distance. Plus intent dynamics: within-session transitions, session boundaries, and how openings differ from later turns." />
-      </Section>
-    ),
+    group: 'Programming by Chat',
+    rq: 'chat-rq1',
+    accent: 'warning',
+    render: () => <ChatFindings />,
   },
   {
-    id: 'chat-takeaways',
-    label: 'Takeaways',
-    kind: 'slide',
-    group: 'Part I',
-    accent: 'primary',
-    render: () => (
-      <Section id="chat-takeaways" eyebrow="Part I" title="Developers specify progressively" accent="primary">
-        <Placeholder note="Headline claims: developers specify progressively rather than upfront, redistribute cognitive work to the assistant, and actively manage an opaque collaborator." />
-      </Section>
-    ),
+    id: 'chat-shapes',
+    label: 'Session archetypes',
+    kind: 'section',
+    group: 'Programming by Chat',
+    rq: 'chat-rq2',
+    accent: 'warning',
+    render: () => <SessionShapes />,
+  },
+  {
+    id: 'chat-dynamics',
+    label: 'Intent dynamics',
+    kind: 'section',
+    group: 'Programming by Chat',
+    rq: 'chat-rq2',
+    accent: 'warning',
+    render: () => <SessionDynamics />,
   },
 
-  // Part II: Developer-Agent Misalignment (EMNLP 2026, under submission)
+  // Coding Agent Misalignment (EMNLP 2026, under submission)
   {
     id: 'part-2',
     label: 'Coding Agent Misalignment',
     kind: 'slide',
-    group: 'Part II',
+    group: 'Coding Agent Misalignment',
     accent: 'error',
+    showInOutline: false,
     render: () => (
       <PartDivider
         accent="error"
         id="part-2"
-        kicker="Part II"
         title="Coding Agent Misalignment"
-        venue="EMNLP 2026, under submission"
-        question="When the collaboration breaks down, what form does it take, why, and what does it cost?"
+        venue={`${misalignPaper.venue}, ${misalignPaper.status}`}
+        paperTitle={misalignPaper.title}
+        authors={misalignPaper.authors}
+        affiliations={misalignPaper.affiliations}
       />
     ),
   },
@@ -163,11 +209,11 @@ export const sections: SectionEntry[] = [
     id: 'misalign-data',
     label: 'Pipeline',
     kind: 'section',
-    group: 'Part II',
+    group: 'Coding Agent Misalignment',
+    rq: 'misalign-method',
     accent: 'error',
-    showInOutline: false,
     render: () => (
-      <Section id="misalign-data" eyebrow="Method" title="From sessions to grounded failures" accent="error">
+      <Section id="misalign-data" title="From sessions to grounded failures">
         <Placeholder note="20,574 IDE and CLI sessions across 1,639 repositories. LLM extraction with an evidence filter that drops unsupported claims, at 0.93 human-evaluated precision, then multi-axial annotation." />
       </Section>
     ),
@@ -176,10 +222,11 @@ export const sections: SectionEntry[] = [
     id: 'misalign-forms',
     label: 'Failure modes',
     kind: 'section',
-    group: 'Part II',
+    group: 'Coding Agent Misalignment',
+    rq: 'misalign-rq1',
     accent: 'error',
     render: () => (
-      <Section id="misalign-forms" eyebrow="RQ1" title="How collaboration breaks" accent="error">
+      <Section id="misalign-forms" title="How collaboration breaks">
         <Placeholder note="Seven symptom categories and seven cause categories: how agents read the project, interpret intent, follow rules, bound their actions, implement and execute, and report progress." />
       </Section>
     ),
@@ -188,10 +235,11 @@ export const sections: SectionEntry[] = [
     id: 'misalign-outcomes',
     label: 'Cost and repair',
     kind: 'section',
-    group: 'Part II',
+    group: 'Coding Agent Misalignment',
+    rq: 'misalign-rq2',
     accent: 'error',
     render: () => (
-      <Section id="misalign-outcomes" eyebrow="RQ2" title="Failure becomes developer work" accent="error">
+      <Section id="misalign-outcomes" title="Failure becomes developer work">
         <Placeholder note="90.50% of episodes cost effort and trust rather than causing irreversible damage. Visible resolution in 9.33% of episodes, and 91.49% of those need explicit developer pushback." />
       </Section>
     ),
@@ -200,10 +248,11 @@ export const sections: SectionEntry[] = [
     id: 'misalign-modality',
     label: 'IDE vs CLI',
     kind: 'section',
-    group: 'Part II',
+    group: 'Coding Agent Misalignment',
+    rq: 'misalign-rq3',
     accent: 'error',
     render: () => (
-      <Section id="misalign-modality" eyebrow="RQ3" title="Interfaces change the failure mode" accent="error">
+      <Section id="misalign-modality" title="Interfaces change the failure mode">
         <Placeholder note="CLI sessions skew toward constraint violations reaching project and external state. IDE sessions skew toward faulty implementations and underspecified instructions confined to task state." />
       </Section>
     ),
@@ -212,10 +261,11 @@ export const sections: SectionEntry[] = [
     id: 'misalign-time',
     label: 'Across sessions',
     kind: 'section',
-    group: 'Part II',
+    group: 'Coding Agent Misalignment',
+    rq: 'misalign-rq4',
     accent: 'error',
     render: () => (
-      <Section id="misalign-time" eyebrow="RQ4" title="Failures persist across sessions" accent="error">
+      <Section id="misalign-time" title="Failures persist across sessions">
         <Placeholder note="Misalignment persists across adjacent sessions in the same repository. The overall rate falls over time, but constraint violations and inaccurate self-reporting grow in share." />
       </Section>
     ),
@@ -228,7 +278,7 @@ export const sections: SectionEntry[] = [
     group: 'Closing',
     accent: 'success',
     render: () => (
-      <Section id="implications" eyebrow="So what" title="Design implications" accent="success">
+      <Section id="implications" title="Design implications">
         <Placeholder note="What both studies say for the people building coding agents: where to intervene, what to measure, and which failures are not fixed by better implementation accuracy." />
       </Section>
     ),
@@ -240,9 +290,29 @@ export const sections: SectionEntry[] = [
     group: 'Closing',
     accent: 'success',
     render: () => (
-      <Section id="closing" eyebrow="Thank you" title="Questions" accent="success">
+      <Section id="closing" title="Questions">
         <Placeholder note="Contact, paper links, and the data availability statement." />
       </Section>
     ),
   },
 ]
+
+/** One rendered node of the page: either an RQ band or a section. */
+export type OutlineNode =
+  | { kind: 'rq'; id: ResearchQuestion; accent: Accent; sections: SectionEntry[] }
+  | { kind: 'section'; section: SectionEntry }
+
+/** Sections in order, with an RQ band inserted wherever the question changes. */
+export const outline: OutlineNode[] = sections.reduce<OutlineNode[]>((nodes, section, i) => {
+  const previous = sections[i - 1]
+  if (section.rq && section.rq !== previous?.rq) {
+    nodes.push({
+      kind: 'rq',
+      id: section.rq,
+      accent: section.accent ?? 'primary',
+      sections: sections.filter((entry) => entry.rq === section.rq),
+    })
+  }
+  nodes.push({ kind: 'section', section })
+  return nodes
+}, [])

@@ -95,7 +95,7 @@ export default function DataScale() {
           sx={{ alignItems: { md: 'flex-end' }, pt: 2 }}
         >
           <Box sx={{ flex: 1 }}>
-            <Typography variant="overline" color="primary.main">
+            <Typography variant="overline" color="text.secondary">
               Corpus breadth
             </Typography>
             <Typography variant="h3">Agent coverage</Typography>

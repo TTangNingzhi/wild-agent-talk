@@ -19,8 +19,8 @@ export default function PaperCard({ paper }: { paper: Paper }) {
     <Stack spacing={2.5} sx={{ flex: 1, minWidth: 0 }}>
       <Stack spacing={1.5}>
         <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center', flexWrap: 'wrap' }} useFlexGap>
-          <Box sx={{ width: 28, height: 4, bgcolor: color, borderRadius: 2 }} />
-          <Typography variant="overline" sx={{ color }}>
+          <Box sx={{ width: 28, height: 4, bgcolor: 'divider', borderRadius: 2 }} />
+          <Typography variant="overline" color="text.primary">
             {paper.number} {paper.short}
           </Typography>
         </Stack>

@@ -1,3 +1,4 @@
+import Chip from '@mui/material/Chip'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 
@@ -26,7 +27,7 @@ const consequences = [
 /** How public agent sessions become collectable at all. */
 export default function DataProvenance() {
   return (
-    <Section id="data-provenance" eyebrow="Collection pipeline" title="Two routes into public Git history">
+    <Section id="data-provenance" title="Two routes into public Git history">
       <Reveal>
         <ProvenanceDiagram />
       </Reveal>
@@ -38,10 +39,20 @@ export default function DataProvenance() {
       >
         {consequences.map((item, i) => (
           <Reveal key={item.key} delay={i * 120}>
-            <Stack spacing={1} sx={{ borderTop: '3px solid', borderColor: 'primary.main', pt: 2 }}>
-              <Typography variant="h4" component="h3">
-                {item.title}
-              </Typography>
+            <Stack spacing={1.25}>
+              <Chip
+                label={item.title}
+                variant="outlined"
+                size="small"
+                sx={{
+                  alignSelf: 'flex-start',
+                  height: 32,
+                  color: 'text.secondary',
+                  borderColor: 'grey.400',
+                  fontSize: '1.125rem',
+                  '& .MuiChip-label': { px: 1.25 },
+                }}
+              />
               <Typography variant="body1" color="text.secondary">
                 {item.body}
               </Typography>

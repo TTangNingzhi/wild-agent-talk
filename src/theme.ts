@@ -105,8 +105,18 @@ const theme = createTheme({
     },
     MuiChip: {
       styleOverrides: {
-        root: { fontFamily: display, fontWeight: 500, fontSize: '1rem' },
-        sizeMedium: { height: 34 },
+        root: {
+          fontFamily: display,
+          fontWeight: 500,
+          fontSize: '1rem',
+          borderRadius: 6,
+          '& .MuiChip-label': { paddingLeft: 10, paddingRight: 10 },
+        },
+        sizeMedium: { height: 30 },
+        sizeSmall: {
+          height: 26,
+          '& .MuiChip-label': { paddingLeft: 8, paddingRight: 8 },
+        },
         outlined: { borderColor: googleColors.grey300 },
       },
     },

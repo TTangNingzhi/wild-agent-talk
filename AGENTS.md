@@ -23,14 +23,25 @@ These come from direct review feedback; do not regress them.
 - Outer margins are `max(OUTER_MIN, (100% - SHELL_MAX) / 2)`, so the shell centers and stops growing past `SHELL_MAX`. Widen the page by raising `SHELL_MAX`, never by removing the cap.
 - The rail is a sticky column inside the flex row, not `position: fixed`. Fixed positioning breaks the shared margin and is what made the rail drift away from the content.
 - Slide and Section fill the column they are given; they must not re-center or re-cap their own width.
-- The rail shows section names grouped by part, not abstract dots. It is the reader's outline.
+- The rail shows the whole outline at once, three levels deep: part, research question, section. Not abstract dots, and never collapsed. Findings stop at the page; they do not appear in the rail.
 - No scroll progress bar at the top of the viewport.
 - No tiny text anywhere. 14px is the floor, including eyebrows, captions, and nav labels.
 - No oversized headlines either. Display type caps at 56px; the scale should feel calm, not shouty.
 
+## Hierarchy: four levels, one token each
+
+The talk has exactly four levels, and each one owns a single visual token. Do not invent a fifth, and do not reuse a token for something else.
+
+1. **Part** (Opening, each paper, Closing): a full-viewport `PartDivider`, one accent color, one top-level heading in the rail.
+2. **Research question** (Data, RQ1, RQ2, ...): an `RqMarker` band, rendered once above the first section of the run, never per section. Registered as `rq` on the section entry; `App` inserts the band wherever the value changes, and the key doubles as the scroll anchor.
+3. **Section**: an `h2` title, and the last level that appears in the rail. `Section` has no label slot above the title; if a section seems to need one, it usually belongs under a different RQ.
+4. **Finding**: a `Finding` block inside a section, its number beside an `h3` claim, evidence underneath. Every numbered finding in either paper uses this same block, whether its evidence is two stats or a full figure, and findings are never navigation.
+
+Below all of that, labels inside a card (step names, loop names) use grey `overline`. Accent color means hierarchy or data series, never decoration, so a colored small-caps label always reads as "this is where you are" and a grey one as "this is what this card is called". Exceptions are labels that encode data, such as the DataScale timeline stages and the archetype chips, whose colors match the paper figures.
+
 ## Brand color as structure
 
-`src/accents.ts` assigns one Google color per part: blue for the opening and Part I, red for Part II (the half about failure), green for the closing. That accent drives the part divider rule, the section eyebrows, and the rail group, so color tells the audience where they are. Yellow is reserved for chart fills, where it has the area to stay legible. The cover carries all four as a single full-width rule.
+`src/accents.ts` assigns one Google color per part, each used once: blue for the opening, yellow for Programming by Chat, red for Coding Agent Misalignment (the half about failure), green for the closing. That accent drives the part divider rule, the RQ band, the finding numbers, and the rail, so color tells the audience where they are. The cover carries all four as a single full-width rule.
 
 ## Facts and assets
 

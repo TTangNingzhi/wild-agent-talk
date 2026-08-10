@@ -27,24 +27,13 @@ function FlowNode({ tone, children }: { tone: Tone; children: ReactNode }) {
     <Paper
       variant="outlined"
       sx={{
-        position: 'relative',
         minWidth: 0,
         height: '100%',
-        overflow: 'hidden',
         p: 2,
-        pt: 2.25,
         bgcolor: tint,
         borderColor: 'divider',
       }}
     >
-      {tone === 'dual' ? (
-        <Stack direction="row" sx={{ position: 'absolute', inset: '0 0 auto 0', height: 4 }}>
-          <Box sx={{ flex: 1, bgcolor: 'primary.main' }} />
-          <Box sx={{ flex: 1, bgcolor: 'error.main' }} />
-        </Stack>
-      ) : (
-        <Box sx={{ position: 'absolute', inset: '0 0 auto 0', height: 4, bgcolor: tone }} />
-      )}
       <Stack spacing={0.75}>{children}</Stack>
     </Paper>
   )
@@ -52,39 +41,119 @@ function FlowNode({ tone, children }: { tone: Tone; children: ReactNode }) {
 
 function StraightArrow({ color = 'text.disabled' }: { color?: string }) {
   return (
-    <Box sx={{ display: 'grid', placeItems: 'center', color }} aria-hidden="true">
+    <Box
+      sx={{
+        display: 'grid',
+        placeItems: 'center',
+        width: '100%',
+        height: { xs: 32, md: '100%' },
+        minHeight: 0,
+        color,
+      }}
+      aria-hidden="true"
+    >
       <ArrowForwardRoundedIcon sx={{ display: { xs: 'none', md: 'block' } }} />
       <ArrowDownwardRoundedIcon sx={{ display: { xs: 'block', md: 'none' } }} />
     </Box>
   )
 }
 
-function BranchConnector({ merge = false }: { merge?: boolean }) {
+/** Stroke of the MUI arrow shaft, so drawn lines and arrowheads read as one line. */
+const LINE = 2
+const RADIUS = 12
+/** Kept clear on the right so the arrow icon's shaft continues the elbow. */
+const ARROW_LANE = 24
+/** Shared run before the split. */
+const STEM = 10
+
+/**
+ * One rounded elbow: a horizontal leg at `at`, turning on `side` and running to `to`.
+ * Drawn with borders rather than SVG so the corner stays a true arc at any cell height.
+ */
+function Elbow({
+  color,
+  at,
+  to,
+  side,
+  left = 0,
+}: {
+  color: string
+  at: string
+  to: string
+  side: 'left' | 'right'
+  left?: number
+}) {
+  const downward = parseFloat(to) > parseFloat(at)
+  const top = downward ? at : to
+  const bottom = downward ? to : at
+  const legEdge = downward ? 'Top' : 'Bottom'
+  const turnEdge = side === 'left' ? 'Left' : 'Right'
+
   return (
     <Box
-      component="svg"
-      viewBox="0 0 32 200"
-      preserveAspectRatio="none"
-      aria-hidden="true"
-      sx={{ width: '100%', height: '100%', display: 'block' }}
-    >
-      <path
-        d={merge ? 'M0 50 H16 V100 H29' : 'M3 100 H16 V50 H29'}
-        fill="none"
-        stroke="#1a73e8"
-        strokeWidth="2"
-        vectorEffect="non-scaling-stroke"
-      />
-      <path
-        d={merge ? 'M0 150 H16 V100 H29' : 'M3 100 H16 V150 H29'}
-        fill="none"
-        stroke="#ea4335"
-        strokeWidth="2"
-        vectorEffect="non-scaling-stroke"
-      />
-      <path d="M32 50 l-6 -4 v8 Z" fill="#1a73e8" opacity={merge ? 0 : 1} />
-      <path d="M32 150 l-6 -4 v8 Z" fill="#ea4335" opacity={merge ? 0 : 1} />
-      <path d="M32 100 l-6 -4 v8 Z" fill="#5f6368" opacity={merge ? 1 : 0} />
+      sx={{
+        position: 'absolute',
+        left,
+        right: ARROW_LANE,
+        top: `calc(${top} - ${LINE / 2}px)`,
+        height: `calc(${bottom} - ${top} + ${LINE}px)`,
+        [`border${legEdge}`]: `${LINE}px solid`,
+        [`border${turnEdge}`]: `${LINE}px solid`,
+        borderColor: color,
+        [`border${legEdge}${turnEdge}Radius`]: `${RADIUS}px`,
+      }}
+    />
+  )
+}
+
+function BranchArrow({ color, at }: { color: string; at: string }) {
+  return (
+    <ArrowForwardRoundedIcon
+      sx={{
+        position: 'absolute',
+        right: 4,
+        top: at,
+        fontSize: 24,
+        color,
+        transform: 'translateY(-50%)',
+      }}
+    />
+  )
+}
+
+/** Vertical centers of the two diagram rows, as a share of the connector height. */
+const ROW_TOP = '22%'
+const ROW_BOTTOM = '74%'
+
+function BranchConnector({ merge = false }: { merge?: boolean }) {
+  const blueAt = merge ? '45%' : ROW_TOP
+  const redAt = merge ? '55%' : ROW_BOTTOM
+
+  return (
+    <Box aria-hidden="true" sx={{ position: 'relative', width: '100%', height: '100%' }}>
+      {merge ? (
+        <>
+          <Elbow color="primary.main" at={ROW_TOP} to="45%" side="right" />
+          <Elbow color="error.main" at={ROW_BOTTOM} to="55%" side="right" />
+        </>
+      ) : (
+        <>
+          <Box
+            sx={{
+              position: 'absolute',
+              left: 0,
+              width: STEM + LINE,
+              top: `calc(50% - ${LINE / 2}px)`,
+              height: LINE,
+              bgcolor: 'text.disabled',
+            }}
+          />
+          <Elbow color="primary.main" at={ROW_TOP} to="50%" side="left" left={STEM} />
+          <Elbow color="error.main" at={ROW_BOTTOM} to="50%" side="left" left={STEM} />
+        </>
+      )}
+      <BranchArrow color="primary.main" at={blueAt} />
+      <BranchArrow color="error.main" at={redAt} />
     </Box>
   )
 }
@@ -214,7 +283,7 @@ export default function ProvenanceDiagram() {
         sx={{
           display: { xs: 'none', md: 'grid' },
           gridTemplateColumns:
-            'minmax(150px, .85fr) 36px minmax(180px, 1.05fr) 36px minmax(260px, 1.5fr) 36px minmax(190px, 1fr)',
+            'minmax(150px, .85fr) 52px minmax(180px, 1.05fr) 36px minmax(260px, 1.5fr) 52px minmax(190px, 1fr)',
           gridTemplateRows: 'minmax(142px, auto) minmax(174px, auto)',
           rowGap: 2,
           alignItems: 'stretch',
