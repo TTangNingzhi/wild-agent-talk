@@ -503,6 +503,293 @@ export const sessionBoundaries = {
   ],
 } as const
 
+/* ------------------------------------------------------------------------- *
+ * Coding Agent Misalignment (EMNLP 2026, under submission)
+ * ------------------------------------------------------------------------- */
+
+/** Section 3.2: what counts as misalignment, and what does not. */
+export const misalignScope = {
+  definition:
+    'An observable breakdown between a developer and a coding agent, visible only when the developer corrects or pushes back.',
+  goals: [
+    { name: 'Instructions', note: 'What the developer explicitly asked for' },
+    { name: 'Intentions', note: 'What the developer actually wanted' },
+  ],
+  outOfScope:
+    'Out of scope: silent rejection, off-chat edits, and the alignment goals chat logs cannot support (preferences, desires, interests, values).',
+  frame: 'Alignment goals from Shen et al., 2024',
+} as const
+
+/** Section 3.2: one structured record per breakdown, extracted session-wide. */
+export const misalignRecord = {
+  fields: [
+    { key: 'name', value: 'Introduced infinite scroll without usable page navigation' },
+    { key: 'alignment_goal', value: 'intention' },
+    { key: 'confidence', value: 'high' },
+    {
+      key: 'description',
+      value:
+        'The developer asked about pagination; the agent shipped infinite scroll and called it pagination.',
+    },
+  ],
+  evidence: [
+    { turn: 77, role: 'User', quote: 'could we paginate?' },
+    { turn: 78, role: 'Assistant', quote: "Yes, let's add pagination... and make it scrollable" },
+    { turn: 79, role: 'User', quote: 'how do i navigate to the next page!?' },
+  ],
+  rules: [
+    'Whole session at once: pushback in turn 8 only makes sense against turn 3.',
+    'Bottom-up, no prescriptive taxonomy at extraction time.',
+    'Every episode anchored to verbatim quotes with turn numbers.',
+    'Precision over recall.',
+  ],
+} as const
+
+/** Section 3.3: the two failure patterns a single extraction pass produces. */
+export const misalignValidation = {
+  patterns: [
+    {
+      name: 'Normative prior bias',
+      share: '42.28%',
+      note: 'Flags deviations from its own idea of good agent behavior, with no developer complaint.',
+    },
+    {
+      name: 'Observational blind spots',
+      share: '57.72%',
+      note: 'Blames the agent using context the log never shows. Invisible agent action alone is 35.68%.',
+    },
+  ],
+  kept: '16,118 of 29,896',
+  keptPct: '53.9%',
+  precision: '0.93',
+  precisionNote: '200 sampled records, 2 annotators, all quotes verbatim',
+  recall: '1.77 / 2.00',
+  recallNote: 'coverage rated over 30 full sessions',
+} as const
+
+/** Section 3.4: four axes, developed over three rounds of abductive coding. */
+export const misalignAxes = [
+  { code: 'Symptom', note: 'What form the misalignment took', kind: '7 categories, multi-label' },
+  { code: 'Cause', note: 'Why it occurred', kind: '7 categories, multi-label' },
+  { code: 'Outcome', note: 'Damage severity and where it landed', kind: 'single-label' },
+  { code: 'Resolution', note: 'Whether and by whom it was resolved', kind: 'single-label' },
+] as const
+
+export const misalignCodebook = {
+  rounds: [
+    { n: '1', note: 'Two researchers open-code 100 records, reconcile into a first codebook.' },
+    { n: '2', note: 'LLM labels everything, 10 records per subcategory reviewed. Four subcategories revised.' },
+    { n: '3', note: 'Merge inconsistent instruction into underspecified instruction. Saturation.' },
+  ],
+  ira: '0.83',
+  accuracy: '0.81',
+  quality: 'Percent agreement between two researchers, and LLM judge accuracy against the adjudicated gold standard.',
+} as const
+
+/** Table 2: symptom distribution, all / IDE / CLI. */
+export const misalignSymptoms = [
+  { code: 'S3', name: 'Developer Constraint Violation', desc: 'Violates an explicit developer constraint', all: 38.33, ide: 32.26, cli: 49.49 },
+  { code: 'S2', name: 'Misread Developer Intent', desc: 'Acts on a wrong interpretation of the request', all: 26.95, ide: 28.39, cli: 24.31 },
+  { code: 'S7', name: 'Inaccurate Self-Reporting', desc: 'Misreports the status of its own work', all: 22.58, ide: 20.36, cli: 26.66 },
+  { code: 'S5', name: 'Faulty Implementation', desc: 'Produces logically or syntactically wrong code', all: 17.82, ide: 22.89, cli: 8.49 },
+  { code: 'S1', name: 'Wrong Project Diagnosis', desc: 'Misreads the codebase, state, or behavior', all: 11.56, ide: 12.78, cli: 9.3 },
+  { code: 'S4', name: 'Self-Initiated Overreach', desc: 'Takes actions beyond the stated scope', all: 10.2, ide: 11.5, cli: 7.8 },
+  { code: 'S6', name: 'Operational Execution Error', desc: 'Commands or tool calls are malformed', all: 2.87, ide: 2.09, cli: 4.32 },
+] as const
+
+/** Table 2: cause distribution, all / IDE / CLI. */
+export const misalignCauses = [
+  { code: 'C6', name: 'Instruction-Following Failure', desc: 'Fails to follow a clearly received instruction', all: 36.49, ide: 29.96, cli: 48.5 },
+  { code: 'C7', name: 'Cannot Determine', desc: 'Root cause not inferable from the log', all: 26.85, ide: 28.97, cli: 22.94 },
+  { code: 'C1', name: 'Underspecified Instruction', desc: 'Instruction is ambiguous or underspecified', all: 15.36, ide: 17.65, cli: 11.15 },
+  { code: 'C3', name: 'Premature Action', desc: 'Acts before gathering enough project state', all: 11.11, ide: 11.94, cli: 9.58 },
+  { code: 'C2', name: 'Scope Overreach', desc: 'Expands scope beyond what was requested', all: 9.47, ide: 10.65, cli: 7.29 },
+  { code: 'C4', name: 'Context Loss', desc: 'Prior context not carried across turns', all: 4.3, ide: 4.37, cli: 4.18 },
+  { code: 'C5', name: 'Default-Driven Override', desc: 'Defaults override an explicit constraint', all: 2.44, ide: 2.63, cli: 2.1 },
+] as const
+
+export const misalignLabelNote =
+  'Symptom and cause are multi-label, so columns sum past 100%. S8 (Other, 0.34%) is excluded.'
+
+/** Section 4.1 findings. */
+export const misalignFormFindings = [
+  {
+    n: 1,
+    headline: 'The top failure is not wrong code, it is an ignored instruction',
+    evidence: [
+      { value: '38.33%', label: 'Developer Constraint Violation, the largest symptom' },
+      { value: '73.68%', label: 'of those trace to plain instruction-following failure' },
+    ],
+    quote: 'Constraints span collaboration style, implementation strategy, and unauthorized destructive commands.',
+  },
+  {
+    n: 2,
+    headline: 'Misread intent is a plausible guess at a vague ask',
+    evidence: [
+      { value: '26.95%', label: 'Misread Developer Intent' },
+      { value: '44.10%', label: 'follow an underspecified instruction the agent resolved on its own' },
+    ],
+    quote: '"could we paginate?" became infinite scroll.',
+  },
+  {
+    n: 3,
+    headline: 'Agents report success they never verified',
+    evidence: [
+      { value: '22.58%', label: 'Inaccurate Self-Reporting' },
+      { value: '27.56%', label: 'of those also claim a developer constraint was met' },
+    ],
+    quote: 'A partial or unverified state is consistently turned into a completion claim.',
+  },
+  {
+    n: 4,
+    headline: 'Faulty code is a minority symptom, but it is the one that breaks things',
+    evidence: [
+      { value: '17.82%', label: 'Faulty Implementation, and only 8.49% in CLI' },
+      { value: '25.00%', label: 'of those reach real system damage, the highest of any symptom' },
+    ],
+    quote: 'Regressions, failed tests, compilation errors, API misuse.',
+  },
+  {
+    n: 5,
+    headline: 'Overreach turns a question into an edit',
+    evidence: [
+      { value: '10.20%', label: 'Self-Initiated Overreach, 66.99% caused by scope overreach' },
+      { value: '13.33%', label: 'developer takeover rate, the highest of any symptom' },
+    ],
+    quote: 'Asking why slide 2 is landscape got the deck rewritten.',
+  },
+  {
+    n: 6,
+    headline: 'A quarter of failures have no cause the log can show',
+    evidence: [
+      { value: '26.85%', label: 'Cannot Determine' },
+      { value: '49.50% / 48.17%', label: 'of faulty implementation and self-reporting episodes' },
+    ],
+    quote: 'The failure is visible in the conversation; its source is hidden in project or execution state.',
+  },
+] as const
+
+/** Table 3: outcome and resolution. */
+export const misalignOutcomes = {
+  severity: [
+    { code: 'DS1', name: 'Effort and trust cost only', pct: 90.5 },
+    { code: 'DS2', name: 'System damage, easily reversed', pct: 8.44 },
+    { code: 'DS4', name: 'Unobservable', pct: 0.91 },
+    { code: 'DS0', name: 'No damage', pct: 0.08 },
+    { code: 'DS3', name: 'System damage, hard to reverse', pct: 0.07 },
+  ],
+  locus: [
+    { code: 'DL1', name: 'Code or task state', pct: 75.8 },
+    { code: 'DL2', name: 'Project state', pct: 18.51 },
+    { code: 'DL4', name: 'External state', pct: 3.57 },
+    { code: 'DL3', name: 'Environment or config', pct: 2.11 },
+  ],
+  resolver: [
+    { code: 'RV2', name: 'Agent, after developer pushback', pct: 91.49 },
+    { code: 'RV3', name: 'Developer took over', pct: 5.52 },
+    { code: 'RV1', name: 'Agent self-corrected', pct: 2.99 },
+  ],
+  locusNote: 'Damage locus is conditioned on system damage (n = 1,372).',
+  resolverNote: 'Resolver is conditioned on resolved episodes (n = 1,504).',
+} as const
+
+/** Section 4.2 findings. */
+export const misalignOutcomeFindings = [
+  {
+    n: 7,
+    headline: 'Misalignment mostly costs developer effort, not the system',
+    evidence: [
+      { value: '90.50%', label: 'cost effort and trust only: redirect, correct, reassess' },
+      { value: '11 episodes', label: 'are hard to reverse, out of 16,118' },
+    ],
+    quote: 'The rare hard cases cross an authorization boundary: releases finalized, Git history rewritten, user pools destroyed.',
+  },
+  {
+    n: 8,
+    headline: 'When damage does land, it lands on code, unless it escapes the codebase',
+    evidence: [
+      { value: '75.80%', label: 'of damaged episodes hit code or task state' },
+      { value: '45.45%', label: 'of the hard-to-reverse ones hit external state instead' },
+    ],
+    quote: 'Recovery gets harder the moment misalignment leaves the local codebase.',
+  },
+  {
+    n: 9,
+    headline: 'Almost nothing gets fixed until the developer says so',
+    evidence: [
+      { value: '91.49%', label: 'of resolved episodes needed explicit pushback' },
+      { value: '2.99%', label: 'were self-corrected by the agent' },
+    ],
+    quote: 'Resolution is visible for only 9.33% of episodes: logs report failures more reliably than successes.',
+  },
+] as const
+
+/** Section 4.3: IDE versus CLI. */
+export const misalignModality = {
+  rows: [
+    { name: 'Median user turns', ide: '3', cli: '5' },
+    { name: 'Misalignment per user turn', ide: '0.132', cli: '0.051' },
+    { name: 'S3. Constraint violation', ide: '32.26%', cli: '49.49%' },
+    { name: 'S5. Faulty implementation', ide: '22.89%', cli: '8.49%' },
+    { name: 'Damage to code or task state', ide: '83.67%', cli: '58.85%' },
+    { name: 'Damage to project or external state', ide: '14.30%', cli: '38.85%' },
+  ],
+  note: 'All differences significant at p < 0.001.',
+  findings: [
+    {
+      n: 10,
+      headline: 'IDE misaligns more often per turn, CLI misaligns further from the code',
+      evidence: [
+        { value: '0.132 vs 0.051', label: 'misalignment per user turn, IDE against CLI' },
+        { value: '38.85% vs 14.30%', label: 'CLI damage reaching project or external state' },
+      ],
+      quote: 'Tight copilot-style collaboration versus broader delegated tasks with deploy and version-control reach.',
+    },
+    {
+      n: 11,
+      headline: 'CLI drifts from constraints, IDE writes wrong code',
+      evidence: [
+        { value: '49.49% vs 32.26%', label: 'constraint violation, CLI against IDE' },
+        { value: '22.89% vs 8.49%', label: 'faulty implementation, IDE against CLI' },
+      ],
+      quote: 'Same models, different failure profile, driven by the interface.',
+    },
+  ],
+} as const
+
+/** Section 4.4: structural and temporal effects. */
+export const misalignPersistence = {
+  findings: [
+    {
+      n: 12,
+      headline: 'Failures cluster inside a session',
+      evidence: [
+        { value: 'lift 1.39', label: 'misread intent with self-initiated overreach' },
+        { value: 'lift 0.71', label: 'constraint violation with faulty implementation, a distinct mode' },
+      ],
+      quote: 'Faulty implementation and inaccurate self-reporting also co-occur above chance (1.20).',
+    },
+    {
+      n: 13,
+      headline: 'Misalignment carries into the next session',
+      evidence: [
+        { value: '0.519 vs 0.336', label: 'chance the next session in the repo also misaligns, a 54.46% increase' },
+        { value: '4.10 and 1.61', label: 'self-persistence for execution errors and faulty implementation' },
+      ],
+      quote: 'These recur until someone fixes the source, not the symptom.',
+    },
+    {
+      n: 14,
+      headline: 'The rate is falling, the mix is shifting',
+      evidence: [
+        { value: 'p < 10⁻⁴⁰', label: 'misalignment per user turn declines, Feb 2025 to Apr 2026' },
+        { value: 'S3 and S7 rising', label: 'while S1, S4, and S5 fall in share, within both IDE and CLI' },
+      ],
+      quote: 'Agents write better code than they did. They follow instructions and report honestly no better than they did.',
+    },
+  ],
+} as const
+
 /** Finding 11: how opening messages differ from later turns. */
 export const sessionOpenings = {
   rows: [

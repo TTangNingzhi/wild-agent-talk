@@ -11,6 +11,11 @@ import Cover from './Cover'
 import DataAccess from './DataAccess'
 import DataProvenance from './DataProvenance'
 import DataScale from './DataScale'
+import MisalignForms from './MisalignForms'
+import MisalignMethod from './MisalignMethod'
+import MisalignModality from './MisalignModality'
+import MisalignOutcomes from './MisalignOutcomes'
+import MisalignPersistence from './MisalignPersistence'
 import PartDivider from './PartDivider'
 import Papers from './Papers'
 import SessionDynamics from './SessionDynamics'
@@ -206,30 +211,22 @@ export const sections: SectionEntry[] = [
     ),
   },
   {
-    id: 'misalign-data',
+    id: 'misalign-pipeline',
     label: 'Pipeline',
     kind: 'section',
     group: 'Coding Agent Misalignment',
     rq: 'misalign-method',
     accent: 'error',
-    render: () => (
-      <Section id="misalign-data" title="From sessions to grounded failures">
-        <Placeholder note="20,574 IDE and CLI sessions across 1,639 repositories. LLM extraction with an evidence filter that drops unsupported claims, at 0.93 human-evaluated precision, then multi-axial annotation." />
-      </Section>
-    ),
+    render: () => <MisalignMethod />,
   },
   {
     id: 'misalign-forms',
-    label: 'Failure modes',
+    label: 'Symptoms and causes',
     kind: 'section',
     group: 'Coding Agent Misalignment',
     rq: 'misalign-rq1',
     accent: 'error',
-    render: () => (
-      <Section id="misalign-forms" title="How collaboration breaks">
-        <Placeholder note="Seven symptom categories and seven cause categories: how agents read the project, interpret intent, follow rules, bound their actions, implement and execute, and report progress." />
-      </Section>
-    ),
+    render: () => <MisalignForms />,
   },
   {
     id: 'misalign-outcomes',
@@ -238,11 +235,7 @@ export const sections: SectionEntry[] = [
     group: 'Coding Agent Misalignment',
     rq: 'misalign-rq2',
     accent: 'error',
-    render: () => (
-      <Section id="misalign-outcomes" title="Failure becomes developer work">
-        <Placeholder note="90.50% of episodes cost effort and trust rather than causing irreversible damage. Visible resolution in 9.33% of episodes, and 91.49% of those need explicit developer pushback." />
-      </Section>
-    ),
+    render: () => <MisalignOutcomes />,
   },
   {
     id: 'misalign-modality',
@@ -251,24 +244,16 @@ export const sections: SectionEntry[] = [
     group: 'Coding Agent Misalignment',
     rq: 'misalign-rq3',
     accent: 'error',
-    render: () => (
-      <Section id="misalign-modality" title="Interfaces change the failure mode">
-        <Placeholder note="CLI sessions skew toward constraint violations reaching project and external state. IDE sessions skew toward faulty implementations and underspecified instructions confined to task state." />
-      </Section>
-    ),
+    render: () => <MisalignModality />,
   },
   {
     id: 'misalign-time',
-    label: 'Across sessions',
+    label: 'Structure and time',
     kind: 'section',
     group: 'Coding Agent Misalignment',
     rq: 'misalign-rq4',
     accent: 'error',
-    render: () => (
-      <Section id="misalign-time" title="Failures persist across sessions">
-        <Placeholder note="Misalignment persists across adjacent sessions in the same repository. The overall rate falls over time, but constraint violations and inaccurate self-reporting grow in share." />
-      </Section>
-    ),
+    render: () => <MisalignPersistence />,
   },
 
   {
