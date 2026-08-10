@@ -1,0 +1,48 @@
+# Project: Coding Agents in the Wild
+
+A semi-slide-style presentation website for a live research talk at Google DevAI Research (Ningzhi Tang, August 10, 2026). Presents two papers in sources/: programming-by-chat (ASE '26) and coding-agent-misalignment (under submission at EMNLP '26).
+
+## Layout: semi-slide
+
+One continuous scrolling page, not a slide deck. A few full-viewport "slide moments" (cover, part dividers, headline findings); everything else flows like a well-designed article. Smooth scrolling, stable anchor ids per section, large type that reads well on a projector.
+
+## Style
+
+- MUI (@mui/material) components everywhere, but tuned away from stock MUI defaults: the theme in src/theme.ts is the single place to change type, color, and spacing.
+- Google Sans for display and headings, Google Sans Text for body, Google Sans Code for monospace. All three load from fonts.googleapis.com in index.html.
+- Google brand palette: Blue #1a73e8 as primary, with Red #ea4335, Yellow #fbbc04, Green #34a853 as the accent set. Google greys for text and dividers. Light theme, white background. No gradients, no glassmorphism.
+- @mui/x-charts for standard charts; hand-written SVG for custom visualizations. Original paper figures may be used, copied from sources/ into assets.
+- Animations subtle and purposeful, interruptible by scroll, never replaying on every small scroll, never laggy.
+
+## Layout and type rules
+
+These come from direct review feedback; do not regress them.
+
+- Content spans the full width of its column. No narrow left-hugging blocks, no maxWidth in ch units on headings or subtitles just to shorten a line.
+- The rail and the content are one block, not two floating elements. The shell is `[outer margin][rail][RAIL_GAP][content][outer margin]`, laid out as a flex row in `shellSx` (src/layout.ts). The gap between rail and content stays tight at `RAIL_GAP`; all the breathing room belongs to the two outer margins, which are equal.
+- Outer margins are `max(OUTER_MIN, (100% - SHELL_MAX) / 2)`, so the shell centers and stops growing past `SHELL_MAX`. Widen the page by raising `SHELL_MAX`, never by removing the cap.
+- The rail is a sticky column inside the flex row, not `position: fixed`. Fixed positioning breaks the shared margin and is what made the rail drift away from the content.
+- Slide and Section fill the column they are given; they must not re-center or re-cap their own width.
+- The rail shows section names grouped by part, not abstract dots. It is the reader's outline.
+- No scroll progress bar at the top of the viewport.
+- No tiny text anywhere. 14px is the floor, including eyebrows, captions, and nav labels.
+- No oversized headlines either. Display type caps at 56px; the scale should feel calm, not shouty.
+
+## Brand color as structure
+
+`src/accents.ts` assigns one Google color per part: blue for the opening and Part I, red for Part II (the half about failure), green for the closing. That accent drives the part divider rule, the section eyebrows, and the rail group, so color tells the audience where they are. Yellow is reserved for chart fills, where it has the area to stay legible. The cover carries all four as a single full-width rule.
+
+## Facts and assets
+
+- Every number on the page comes from `src/content/dataset.ts` or `src/content/talk.ts`, traced to the papers in sources/. Never inline a statistic in a component.
+- Paper first pages and figures are rendered from the PDFs in sources/ with `pdftoppm -png -r 160`, downscaled with `sips -Z`, and live in `src/assets/papers/` and `src/assets/figures/`.
+- Scroll-triggered reveals use the `Reveal` component, which fires once and never replays.
+
+## Tone
+
+Calm and professional by default. Playful touches are welcome in small doses and only where they aid comprehension or memorability. Real episodes from the papers are the best source of humor; no decorative jokes or emoji.
+
+## Copy rules
+
+- Never use em or en dashes in visible text; rephrase with commas, colons, or periods. Hyphens in compound words are fine.
+- Keep on-page text short: the presenter carries the narrative, the page carries evidence.
