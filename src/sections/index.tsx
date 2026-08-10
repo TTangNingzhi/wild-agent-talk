@@ -2,8 +2,6 @@ import type { ReactNode } from 'react'
 
 import type { Accent } from '../accents'
 
-import Placeholder from '../components/Placeholder'
-import Section from '../components/Section'
 import { papers } from '../content/talk'
 import ChatFindings from './ChatFindings'
 import ChatIntents from './ChatIntents'
@@ -20,6 +18,7 @@ import PartDivider from './PartDivider'
 import Papers from './Papers'
 import SessionDynamics from './SessionDynamics'
 import SessionShapes from './SessionShapes'
+import WhatsNext from './WhatsNext'
 
 const chatPaper = papers.find((paper) => paper.key === 'chat')!
 const misalignPaper = papers.find((paper) => paper.key === 'misalignment')!
@@ -257,28 +256,12 @@ export const sections: SectionEntry[] = [
   },
 
   {
-    id: 'implications',
-    label: 'Implications',
+    id: 'whats-next',
+    label: "What's next?",
     kind: 'section',
     group: 'Closing',
     accent: 'success',
-    render: () => (
-      <Section id="implications" title="Design implications">
-        <Placeholder note="What both studies say for the people building coding agents: where to intervene, what to measure, and which failures are not fixed by better implementation accuracy." />
-      </Section>
-    ),
-  },
-  {
-    id: 'closing',
-    label: 'Questions',
-    kind: 'slide',
-    group: 'Closing',
-    accent: 'success',
-    render: () => (
-      <Section id="closing" title="Questions">
-        <Placeholder note="Contact, paper links, and the data availability statement." />
-      </Section>
-    ),
+    render: () => <WhatsNext />,
   },
 ]
 

@@ -54,3 +54,37 @@ export const papers = [
 ] as const
 
 export type Paper = (typeof papers)[number]
+
+/** Closing: what the two papers make possible, and what is still open. */
+export const whatsNext = {
+  established:
+    'From trajectories we can analyze developer behavior, and more importantly extract structured records that characterize how agents leave developers unsatisfied.',
+  problems: [
+    {
+      n: '1',
+      title: 'The extracted taxonomy is not necessarily right',
+      lead: 'Both papers produce one. So do many others, and they all look broadly alike.',
+      points: [
+        'Working to some extent, enough to publish a paper, may already be enough.',
+        'How does it keep evolving to fit new developer-agent interaction patterns?',
+        'How does it get human validation?',
+      ],
+    },
+    {
+      n: '2',
+      title: 'What to do with the misalignment signal',
+      lead: 'We can detect it now. Both uses are open questions.',
+      points: [
+        'Use it to improve the agent: reward signal, or benchmark cases.',
+        'Use it to build roundabouts for end users: AGENTS.md, skills, and other customization.',
+      ],
+    },
+  ],
+  summer: {
+    label: 'My summer project explores',
+    items: [
+      { name: 'Human annotation interface for trajectory analysis', note: 'Open problem 1' },
+      { name: 'Interaction design space in agent customization', note: 'Open problem 2' },
+    ],
+  },
+} as const
