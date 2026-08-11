@@ -36,8 +36,8 @@ export default function App() {
         <Box
           component="footer"
           sx={{
-            pt: { xs: 2, md: 3 },
-            pb: { xs: 14, md: 20 },
+            pt: { xs: 2, md: 4 },
+            pb: { xs: 14, md: 10 },
             textAlign: 'right',
           }}
         >
