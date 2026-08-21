@@ -188,7 +188,7 @@ export const sections: SectionEntry[] = [
     render: () => <SessionDynamics />,
   },
 
-  // Coding Agent Misalignment (EMNLP 2026, under submission)
+  // Coding Agent Misalignment (EMNLP 2026)
   {
     id: 'coding-agent-misalignment',
     label: 'Coding Agent Misalignment',

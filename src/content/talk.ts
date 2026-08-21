@@ -8,7 +8,6 @@ export const talk = {
   speaker: {
     name: 'Ningzhi Tang',
     homepage: 'https://www.nztang.com/',
-    ldap: 'ningzhitang@',
     roles: ['UX Engineer Intern @ Google', 'PhD Candidate @ University of Notre Dame'],
   },
   venue: 'DevAI Research (Google)',
@@ -42,7 +41,7 @@ export const papers = [
     title:
       'How Coding Agents Fail Their Users: A Large-Scale Analysis of Developer-Agent Misalignment in 20,574 Real-World Sessions',
     venue: 'EMNLP 2026',
-    status: 'under submission',
+    status: 'accepted',
     question: 'Where does collaboration break down?',
     authors:
       'Ningzhi Tang, Chaoran Chen, Gelei Xu, Yiyu Shi, Yu Huang, Collin McMillan, Tao Dong, Toby Jia-Jun Li',

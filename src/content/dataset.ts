@@ -503,7 +503,7 @@ export const sessionBoundaries = {
 } as const
 
 /* ------------------------------------------------------------------------- *
- * Coding Agent Misalignment (EMNLP 2026, under submission)
+ * Coding Agent Misalignment (EMNLP 2026)
  * ------------------------------------------------------------------------- */
 
 /** Section 3.2: what counts as misalignment, and what does not. */
