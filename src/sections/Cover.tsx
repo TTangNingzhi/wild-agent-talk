@@ -80,16 +80,6 @@ export default function Cover() {
                 {talk.speaker.name}
               </Link>
             </Typography>
-            <Typography
-              component="span"
-              sx={{
-                fontFamily: '"Google Sans Code", monospace',
-                fontSize: '1.125rem',
-                color: 'text.disabled',
-              }}
-            >
-              {talk.speaker.ldap}
-            </Typography>
           </Stack>
           {talk.speaker.roles.map((role) => (
             <Typography
